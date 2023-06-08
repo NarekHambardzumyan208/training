@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++11
 
 # Source files
-SRCS = main.cpp swap.h.cpp add.h.cpp
+SRCS = homework.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
