@@ -42,6 +42,7 @@ public:
             this->age = age;
         }
     }
+    person(){}
     int getage() { return age; }
     bool credithistory = 0;
     bool hascredit = 0;
@@ -53,7 +54,20 @@ public:
     void display() {
         cout << "\ncredit history " << credithistory << "\n has credit " << hascredit << "\n has credit card " << hascredcard << "\n registered in our bank " << regedinourbank << "\n name " << name << "\n surname " << surname << "\n pasportnum " << "\n age   " << getage() << "\n salary " << getsalary() << "\n has work  " << getwork();
     }
+    person(const person& obj)
+    {
+        this->age = obj.age;
+        this->salary = obj.salary;
+        this->credithistory = obj.credithistory;
+        this->hascredit = obj.hascredit;
+        this->hascredcard = obj.hascredcard;
+        this->name = obj.name;
+        this->surname = obj.surname;
+        this->pasportnum = obj.pasportnum;
+        this->haswork = obj.haswork;
+    }
 };
+
 int main()
 {
     person Narek;
@@ -68,15 +82,6 @@ int main()
     Narek.setsalary(500000);
     Narek.set_work("yes");
     Narek.display();
+    person Narek2(Narek);
+    Narek.display();
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
