@@ -17,10 +17,10 @@ public:
     }
     void creatematrix()
     {
-        matrix = (int**)malloc(sizeof(int*) * rows);
+        matrix = new int*[rows];
         for (int i = 0; i < rows; i++)
         {
-            matrix[i] = (int*)malloc(sizeof(int) * columns);
+            matrix[i] = new int[columns];
         }
     }
     matrixclass() {
@@ -38,9 +38,9 @@ public:
     matrixclass(const matrixclass&obj) {
         rows = obj.rows;
         columns = obj.columns; 
-        matrix = (int**)malloc(sizeof(int*)*rows);
+        matrix = new int*[rows];
         for (int i = 0; i < rows; i++) {
-            matrix[i] = (int*)malloc(sizeof(int)*columns);
+            matrix[i] = new int[columns];
             for (int j = 0; j < columns; j++) {
                 matrix[i][j] = obj.matrix[i][j];
             }
@@ -53,17 +53,17 @@ public:
         {
             for (int i = 0; i < rows; i++)
             {
-                free(matrix[i]);
+                delete[] matrix[i];
                 matrix[i] = nullptr;
             }
-            free(matrix);
+            delete[] matrix;
             matrix = nullptr;
             rows = obj.rows;
             columns = obj.columns;
-            matrix = (int**)malloc(sizeof(int*) * rows);
+            matrix = new int*[rows];
             for (int i = 0; i < rows; i++)
             {
-                matrix[i] = (int*)malloc(sizeof(int) * columns);
+                matrix[i] = new int[columns];
                 for (int j = 0; j < columns; j++)
                 {
                     matrix[i][j] = obj.matrix[i][j];
@@ -136,10 +136,10 @@ public:
         cout << "Matrix beeing deleted\n";
         for (int i = 0; i < rows; i++)
         {
-            free(matrix[i]);
+            delete[] matrix[i];
             matrix[i] = nullptr;
         }
-        free(matrix);
+        delete[]  matrix;
         matrix = nullptr;
     }
 };
