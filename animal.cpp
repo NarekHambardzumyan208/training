@@ -18,6 +18,7 @@ enum color {
     pink,
     yellow,
     purple,
+    no,
 };
 
 enum gender {
@@ -38,7 +39,7 @@ public:
     how_move animal_move = unknown;
     bool has_heart = false;
     bool is_limited = false;
-    color animal_color;
+    color animal_color = no;
     string omnivorous = "";
     Animal(const Animal&obj)
     {
@@ -106,7 +107,18 @@ public:
     int getSpeed() {
         return speed;
     }
-    Animal(){}
+    Animal(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+    
+    }
    void display() {
         cout << "Age: " << age << endl;
         cout << "Speed: " << speed << endl;
@@ -119,15 +131,30 @@ public:
         cout << "Omnivorous: " << omnivorous << endl;
     }
    virtual void swim() { cout << "im a swimming\n"; }
+   Animal(){}
    virtual void sound() { cout << "im a sounding\n"; }
    virtual void flight() { cout << "im a flightingg\n"; }
 };
 
 class Fish : public Animal {
 public:
-    void swim() { cout << "swimming\n"; }
+    void swim() override final { cout << "swimming\n"; } 
     virtual void dzuk() { cout << "im in a sevan\n"; }
     Fish(){}
+    Fish(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous,bool has_gill,bool deep_swimming,bool swim_inocean) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+        this->has_gill = has_gill;
+        this->deep_swimming = deep_swimming;
+        this->swim_ocean = swim_inocean;
+    }
     Fish(const Fish& obj)
     {
         this->age = obj.age;
@@ -162,16 +189,30 @@ public:
         }
         return *this;
     }
-    bool has_gill;
-    bool deep_swimming;
-    bool swim_ocean;
+    bool has_gill =0;
+    bool deep_swimming = 0;
+    bool swim_ocean = 0;
 };
 
 class Birds : public Animal {
 public:
-    void flying() { cout << "flighting\n"; }
+    void flight() override final{ cout << "flighting\n"; } 
     virtual void punch() { cout << "im a punching\n"; }
     Birds(){}
+    Birds(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous,bool has_nose,bool fly_high,bool can_flight) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+        this->has_nose = has_nose;
+        this->can_flight = can_flight;
+        this->fly_high = fly_high;
+    }
     Birds(const Birds& obj)
     {
         this->age = obj.age;
@@ -206,16 +247,29 @@ public:
         }
         return *this;
     }
-    bool has_nose;
-    bool fly_high;
-    bool can_flight;
+    bool has_nose = 0;
+    bool fly_high  = 0;
+    bool can_flight = 0;
 };
 
 class Mammal : public Animal {
 public:
-    void fighting() { cout << "Fighting"; }
+    void sound() override final{ cout << "screaming\n"; }
     virtual void punch_keng() { cout << "im a punching like a kenguru\n"; }
     Mammal(){}
+    Mammal(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous,bool has_nose,bool laying_eggs) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+        this->has_nose = has_nose;
+        this->laying_eggs = laying_eggs;
+    }
    Mammal(const Mammal& obj)
     {
        this->age = obj.age;
@@ -248,14 +302,29 @@ public:
         }
         return *this;
     }
-    bool has_nose;
-    bool laying_eggs;
+    bool has_nose = 0;
+    bool laying_eggs = 0;
 };
 
 class Ishxan : public Fish {
 public:
-    void dzuk() { cout << "in sevan)\n"; }
+    void dzuk() override final { cout << "in sevan)\n"; }
+    void dead() { cout << "brbrbrbr\n"; }
     Ishxan(){}
+    Ishxan(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous, bool has_gill, bool deep_swimming, bool swim_inocean) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+        this->has_gill = has_gill;
+        this->deep_swimming = deep_swimming;
+        this->swim_ocean = swim_inocean;
+    }
     Ishxan(const Ishxan& obj)
     {
         this->age = obj.age;
@@ -267,7 +336,6 @@ public:
         this->is_limited = obj.is_limited;
         this->animal_color = obj.animal_color;
         this->omnivorous = obj.omnivorous;
-        this->ocean_swim = obj.ocean_swim;
         this->has_gill = obj.has_gill;
         this->deep_swimming = obj.deep_swimming;
         this->swim_ocean = obj.swim_ocean;
@@ -285,21 +353,36 @@ public:
             this->is_limited = obj.is_limited;
             this->animal_color = obj.animal_color;
             this->omnivorous = obj.omnivorous;
-            this->ocean_swim = obj.ocean_swim;
             this->has_gill = obj.has_gill;
             this->deep_swimming = obj.deep_swimming;
             this->swim_ocean = obj.swim_ocean;
         }
         return *this;
     }
-    bool ocean_swim;
 };
 
-class Arciv : public Birds {
+class Eagle : public Birds {
 public:
-    Arciv() {}
-    void punch() { cout << "punching\n"; }
-    Arciv(const Arciv& obj)
+    Eagle() {}
+    Eagle(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous, bool has_nose, bool fly_high, bool can_flight,bool sound, bool killing) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+        this->has_nose = has_nose;
+        this->can_flight = can_flight;
+        this->fly_high = fly_high;
+        this->sound = sound;
+        this->killing = killing;
+    }
+    void punch() override final{ cout << "punching\n"; }
+   virtual void flighting() { cout << "crrr crrr crrrr\n"; }
+    Eagle(const Eagle& obj)
     {
         this->age = obj.age;
         this->speed = obj.speed;
@@ -311,12 +394,11 @@ public:
         this->animal_color = obj.animal_color;
         this->omnivorous = obj.omnivorous;
         this->has_nose = obj.has_nose;
-        this->fly_high = obj.fly_high;
         this->can_flight = obj.can_flight;
         this->sound = obj.sound;
         this->killing = obj.killing;
     }
-    Arciv& operator=(const Arciv& obj)
+    Eagle& operator=(const Eagle& obj)
     {
         if (this != &obj)
         {
@@ -330,15 +412,14 @@ public:
             this->animal_color = obj.animal_color;
             this->omnivorous = obj.omnivorous;
             this->has_nose = obj.has_nose;
-            this->fly_high = obj.fly_high;
             this->can_flight = obj.can_flight;
             this->sound = obj.sound;
             this->killing = obj.killing;
         }
         return *this;
     }
-    bool sound;
-    bool killing;
+    bool sound = 0;
+    bool killing = 0;
 };
 
 class Kenguru : public Mammal {
@@ -361,6 +442,21 @@ public:
         this->pouch = obj.pouch;
         this->laying_eggs = obj.laying_eggs;
     }
+    Kenguru(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart, bool is_limited, color animal_color, string omnivorous, bool has_nose, bool laying_eggs,bool foot_attack,bool pouch) {
+        setAge(age);
+        setSpeed(speed);
+        setSize(size);
+        this->animal_gender = animal_gender;
+        this->animal_color = animal_color;
+        this->animal_move = animal_move;
+        this->has_heart = has_heart;
+        this->is_limited = is_limited;
+        this->omnivorous = omnivorous;
+        this->has_nose = has_nose;
+        this->laying_eggs = laying_eggs;
+        this->pouch = pouch;
+        this->foot_attack = foot_attack;
+    }
     Kenguru& operator=(const Kenguru& obj)
     {
         if (this != &obj)
@@ -381,113 +477,30 @@ public:
         }
         return *this;
     }
-    bool foot_attack;
-    bool pouch;
+    bool foot_attack = 0;
+    bool pouch = 0;
 };
 
 int main() {
-    Animal obj;
-    obj.setAge(5);
-    obj.setSpeed(10);
-    obj.setSize(20);
-    obj.animal_gender = female;
-    obj.animal_move = walk;
-    obj.has_heart = true;
-    obj.is_limited = false;
-    obj.animal_color = red;
-    obj.omnivorous = "Yes";
-    obj.display();
+    Animal** obj = new Animal * [7];
 
-    Fish fishObj;
-    fishObj.setAge(2);
-    fishObj.setSpeed(5);
-    fishObj.setSize(10);
-    fishObj.animal_gender = unknown_gender;
-    fishObj.animal_move = swim;
-    fishObj.has_heart = true;
-    fishObj.is_limited = true;
-    fishObj.animal_color = blue;
-    fishObj.omnivorous = "No";
-    fishObj.has_gill = true;
-    fishObj.deep_swimming = true;
-    fishObj.swim_ocean = true;
-    fishObj.display();
-
-    Birds birdsObj;
-    birdsObj.setAge(3);
-    birdsObj.setSpeed(15);
-    birdsObj.setSize(8);
-    birdsObj.animal_gender = male;
-    birdsObj.animal_move = fly;
-    birdsObj.has_heart = true;
-    birdsObj.is_limited = false;
-    birdsObj.animal_color = yellow;
-    birdsObj.omnivorous = "Yes";
-    birdsObj.has_nose = true;
-    birdsObj.fly_high = true;
-    birdsObj.can_flight = true;
-    birdsObj.display();
-
-    Mammal mammalObj;
-    mammalObj.setAge(4);
-    mammalObj.setSpeed(12);
-    mammalObj.setSize(25);
-    mammalObj.animal_gender = female;
-    mammalObj.animal_move = walk;
-    mammalObj.has_heart = true;
-    mammalObj.is_limited = false;
-    mammalObj.animal_color = purple;
-    mammalObj.omnivorous = "No";
-    mammalObj.has_nose = true;
-    mammalObj.laying_eggs = false;
-    mammalObj.display();
-
-    Ishxan Ishxanobj;
-    Ishxanobj.setAge(2);
-    Ishxanobj.setSpeed(5);
-    Ishxanobj.setSize(10);
-    Ishxanobj.animal_gender = unknown_gender;
-    Ishxanobj.animal_move = swim;
-    Ishxanobj.has_heart = true;
-    Ishxanobj.is_limited = true;
-    Ishxanobj.animal_color = blue;
-    Ishxanobj.omnivorous = "No";
-    Ishxanobj.has_gill = true;
-    Ishxanobj.deep_swimming = true;
-    Ishxanobj.swim_ocean = true;
-    Ishxanobj.display();
-
-    Arciv arcivobj;
-    arcivobj.setAge(3);
-    arcivobj.setSpeed(15);
-    arcivobj.setSize(8);
-    arcivobj.animal_gender = male;
-    arcivobj.animal_move = fly;
-    arcivobj.has_heart = true;
-    arcivobj.is_limited = false;
-    arcivobj.animal_color = yellow;
-    arcivobj.omnivorous = "Yes";
-    arcivobj.has_nose = true;
-    arcivobj.fly_high = true;
-    arcivobj.can_flight = true;
-    arcivobj.sound = true;
-    arcivobj.killing = true;
-    arcivobj.display();
-
-    Kenguru kenguruobj;
-    kenguruobj.setAge(4);
-    kenguruobj.setSpeed(12);
-    kenguruobj.setSize(25);
-    kenguruobj.animal_gender = female;
-    kenguruobj.animal_move = walk;
-    kenguruobj.has_heart = true;
-    kenguruobj.is_limited = false;
-    kenguruobj.animal_color = yellow;
-    kenguruobj.omnivorous = "No";
-    kenguruobj.has_nose = true;
-    kenguruobj.laying_eggs = false;
-    kenguruobj.display();
-
+    obj[0] = new Animal(5, 10, 20, female, walk, 1, 0, red, "Yes");
+    obj[1] = new Fish(2, 5, 10, male, swim, 1, 1, blue, "No", 1, 0, 1);
+    obj[2] = new Birds(2, 5, 10, female, fly, 1, 1, blue, "Yes", 1, 0,1);
+    obj[3] = new Mammal(4,12,25,female,walk,true,false,purple,"No",true,false);
+    obj[4] = new Ishxan(2,5,10,unknown_gender,swim,true,true,blue,"No",true,true,true);
+    obj[5] = new Eagle(3,15,8,male,fly,1,0,yellow,"Yes",1,1,1,1,true);
+    obj[6] = new Kenguru(4,12,25,female,walk,true,false,yellow,"No",true,false,true,true);
+    obj[1]->swim();
+    obj[2]->sound();
+    obj[3]->flight();
+    obj[0]->display();
+    obj[1]->display();
+    obj[2]->display();
+    obj[3]->display();
+    obj[4]->display();
+    obj[5]->display();
+    obj[6]->display();
     return 0;
 }
 
