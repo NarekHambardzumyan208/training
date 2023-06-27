@@ -36,6 +36,13 @@ public:
         }
         return *this;
     }
+    int& operator[](int index) {
+        if (index > size) {
+            std::cerr << "The index cant be a bigger than size\n";
+            throw abort;
+        }
+        return ptr[index];
+    }
     void gen_elements()
     {
         for (int i = 0; i < size; i++)
@@ -71,7 +78,8 @@ int main()
     Array first;
     first.gen_elements();
     first.display();
-   std::cout << first.at(5);
+    std::cout << first[3]<< std::endl;
+   std::cout << first.at(2) << std::endl;
    std::cout<<std::endl;
 }
 
