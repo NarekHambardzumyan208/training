@@ -36,7 +36,7 @@ public:
         }
         return *this;
     }
-    int& operator[](int index) {
+    int operator[](int index) {
         if (index > size) {
             std::cerr << "The index cant be a bigger than size\n";
             throw abort;

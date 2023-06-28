@@ -1,45 +1,55 @@
-// UpgradedAnimal.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 class Animal {
 protected:
     bool hungry = 0;
+    int age = 0;
     std::string name;
 public:
-    Animal(bool hungry,std::string name): hungry(hungry), name(name){}
-    virtual void sound(){
+    Animal() {}
+    Animal(bool hungry, std::string name, int age) : hungry(hungry), name(name), age(age) {}
+    virtual void sound() {
         std::cout << "Animal sound\n";
     };
 };
-class Mammal : protected Animal {
+class Mammal :virtual protected Animal {
 public:
-    Mammal(std::string mammalname, bool hungry) : Animal(hungry, mammalname){}
-    void sound(){
+    Mammal() {}
+    Mammal(std::string mammalname, bool hungry, int age) :Animal(hungry, mammalname, age) {}
+    void sound() {
         std::cout << "Mammal sound\n";
     }
 };
-class Lion: protected Mammal {
+class Fish :virtual protected Animal {
 public:
-    Lion(std::string LionName,bool hungry) : Mammal(LionName,hungry){}
+    Fish() {}
+    Fish(std::string FishName, bool hungry, int age) : Animal(hungry, FishName, age) {}
+    void sound() {
+        std::cout << "Fish sound\n";
+    }
+};
+class Frog :virtual protected Fish, Mammal {
+public:
+    Frog(std::string FrogName, bool hungry, int age) : Animal(hungry, FrogName, age) {}
+    void sound() {
+        std::cout << "grr,grr\n";
+    }
+    void getage() {
+        std::cout << "age\n" << age;
+    };
+};
+class Lion : protected Mammal {
+public:
+    Lion(std::string LionName, bool hungry, int age) : Mammal(LionName, hungry, age) {}
     void sound() final
-    { 
+    {
         std::cout << "Roarr!!!!\n";
     }
 };
 int main()
 {
-    Lion Armenian("Caucauss", 1);
+    Lion Armenian("Caucauss", 1, 15);
     Armenian.sound();
+    Frog Caucauss("Armenian", 1, 25);
+    Caucauss.sound();
+    Caucauss.getage();
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
