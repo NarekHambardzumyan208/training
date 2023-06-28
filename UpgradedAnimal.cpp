@@ -27,7 +27,7 @@ public:
         std::cout << "Fish sound\n";
     }
 };
-class Frog :virtual protected Fish, Mammal {
+class Frog :virtual protected Fish,virtual protected Mammal {
 public:
     Frog(std::string FrogName, bool hungry, int age) : Animal(hungry, FrogName, age) {}
     void sound() {
