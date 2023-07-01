@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++11
 
 # Source files
-SRCS = animal.cpp
+SRCS = X_or_O_Game.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
