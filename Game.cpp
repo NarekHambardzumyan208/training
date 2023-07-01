@@ -1,5 +1,7 @@
 ﻿#include <iostream>
 using namespace std;
+int x;
+int y;
 class Board {
 private:
     int rows = 3;
@@ -10,6 +12,8 @@ private:
         checkwinnercolumns();
         checkwinnerdiagonal();
     }
+    int x = -1;
+    int y = -1;
     void checkwinnercolumns(){
 
         if ((matrix[0][0]) == *("X") && matrix[1][0] == *("X") && matrix[2][0] == *("X")) {
@@ -246,10 +250,18 @@ public:
     }
     void display() {
         cout << "O /  1 / 2 / 3 /\n";
+        short a = 0;
+        short b = x;
+        --b;
         for (int i = 0; i < rows; i++)
         {
-            short a = i;
-            cout << ++a << " / [";
+            if (b != i) {
+                a = i;
+                cout << ++a << " / [";
+            }
+            else {
+                cout << "->" << " / [";
+            }
             for (int j = 0; j < columns; j++)
             {
                 cout << matrix[i][j] << " | ";
@@ -258,60 +270,86 @@ public:
         }
     }
     void InputX() {
-        int i;
-        int j;
-        cin >> i;
-        cin >> j;
-        --i;
-        --j;
-        if (2 < i || 2 < j)
-        {
-            cerr << "The inputed number cant be a bigger than three\n";
-            throw abort;
-             
-        }
-            while (matrix[i][j] == *("X") || matrix[i][j] == *("O"))
-            {
-                cerr << "You Cant Place above other played location\n";
-                cin >> i;
-                cin >> j;
-                --i;
-                --j;
-                if (2 < i || 2 < j)
-                {
-                    cerr << "The inputed number cant be a bigger than three\n";
-                    throw abort;
-                }
-            }
-        matrix[i][j] = *("X");
-    }
-    void InputO() {
-        int i;
-        int j;
-        cin >> i;
-        cin >> j;
-        --i;
-        --j;
-        if (2 < i || 2 < j)
+        cin >> x;
+        if (3 < x)
         {
             cerr << "The inputed number cant be a bigger than three\n";
             throw abort;
 
         }
-        while (matrix[i][j] == *("X") || matrix[i][j] == *("O"))
+        display();
+        cin >> y;
+        if (3 < y)
+        {
+            cerr << "The inputed number cant be a bigger than three\n";
+            throw abort;
+        }
+        --x;
+        --y;
+            while (matrix[x][y] == *("X") || matrix[x][y] == *("O"))
+            {
+                cerr << "You Cant Place above other played location\n";
+                cin >> x;
+                if (3 < x)
+                {
+                    cerr << "The inputed number cant be a bigger than three\n";
+                    throw abort;
+
+                }
+                display();
+                cin >> y;
+                if (3 < y)
+                {
+                    cerr << "The inputed number cant be a bigger than three\n";
+                    throw abort;
+                }
+                --x;
+                --y;
+            }
+        matrix[x][y] = *("X");
+         x = -1;
+         y = -1;
+    }
+    void InputO() {
+        cin >> x;
+        if (3 < x)
+        {
+            cerr << "The inputed number cant be a bigger than three\n";
+            throw abort;
+        }
+        display();
+        cin >> y;
+        if (3 < y)
+        {
+            cerr << "The inputed number cant be a bigger than three\n";
+            throw abort;
+
+        }
+        --x;
+        --y;
+        while (matrix[x][y] == *("X") || matrix[x][y] == *("O"))
         {
             cerr << "You Cant Place above other played location\n";
-            cin >> i;
-            cin >> j;
-            --i;
-            --j;
-            if (2 < i || 2 < j)
+            cin >> x;
+            if (3 < x)
             {
                 cerr << "The inputed number cant be a bigger than three\n";
                 throw abort;
             }
+            display();
+            cin >> y;
+            if (3 < y)
+            {
+                cerr << "The inputed number cant be a bigger than three\n";
+                throw abort;
+
+            }
+            --x;
+            --y;
         }
-        matrix[i][j] = *("O");
+        matrix[x][y] = *("O");
+        x = -1;
+        y = -1;
     }
     ~Board() {
         for (int i = 0; i < rows; i++)
@@ -323,6 +361,7 @@ public:
         matrix = nullptr;
     }
     void start() {
+        system("cls");
         cout << "The game is started input the where you want to place x\n";
         display();
         for (int i = 0; i < 9; i++)
