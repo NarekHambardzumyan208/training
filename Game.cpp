@@ -333,7 +333,7 @@ public:
             checkwinner();
             InputO();
             system("cls");
-            //check win or noooottttt
+            checkwinner();
             display();
         }
     }
