@@ -28,7 +28,7 @@ public:
         ++age;
         return*this;
     }
-    Animal& operator++(int) {
+    Animal operator++(int) {
         Animal temp(*this);
         ++(*this);
         return temp;
