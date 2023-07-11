@@ -12,8 +12,8 @@ public:
         std::cout << "The array was created\n";
     }
     Array(Array&& obj) : size(obj.size),ptr(obj.ptr) {
-        obj.size = NULL;
-        obj.ptr = NULL;
+        obj.size = 0;
+        obj.ptr = nullptr;
     }
     Array& operator=(Array&&obj){
         if (this != &obj)
@@ -21,8 +21,8 @@ public:
             delete[] ptr;
             ptr = obj.ptr;
             size = obj.size;
-            obj.ptr = NULL;
-            obj.size = NULL;
+            obj.ptr = nullptr;
+            obj.size = 0;
       }
         return *this;
     }
