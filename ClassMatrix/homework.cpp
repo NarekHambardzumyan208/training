@@ -9,19 +9,20 @@ private:
     int** matrix;
 public:
     clsmatrix() {
-        while (rows <= 0 || columns <= 0){
+        getsize();
+        matrix = new int**[rows];
+        for (int i = 0; i < rows; i++)
+        {
+            matrix[i] = new int*[columns];
+        }
+        cout << "matrix was created\n";
+    }
+    void getsize(){        while (rows <= 0 || columns <= 0){
             cout << "input the rows of matrix\n";
         cin >> rows;
         cout << "input the columns of matrix\n";
         cin >> columns;
-    }
-        matrix = (int**)malloc(sizeof(int*) * rows);
-        for (int i = 0; i < rows; i++)
-        {
-            matrix[i] = (int*)malloc(sizeof(int) * columns);
-        }
-        cout << "matrix was created\n";
-    }
+    }}
     void init() {
         for (int i = 0; i < rows; i++)
         {
