@@ -28,104 +28,143 @@ enum gender {
 
 class Animal {
 protected:
-    int age = 0;
-    int speed = 0;
-    int size = 0;
-
+    int m_age = 0;
+    int m_speed = 0;
+    int m_size = 0;
+    std::string* m_types = new std::string[5];
 public:
-    gender animal_gender = unknown_gender;
-    how_move animal_move = unknown;
-    bool has_heart = false;
-    bool is_limited = false;
-    color animal_color = no;
-    std::string omnivorous = "";
+    gender m_animal_gender = unknown_gender;
+    how_move m_animal_move = unknown;
+    bool m_has_hearth = false;
+    bool m_is_limited = false;
+    color m_animal_color = no;
+    std::string m_omnivorous = "";
 
     Animal() {}
 
-    Animal(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart,
-        bool is_limited, color animal_color, std::string omnivorous)
-        : age(age),
-        speed(speed),
-        size(size),
-        animal_gender(animal_gender),
-        animal_move(animal_move),
-        has_heart(has_heart),
-        is_limited(is_limited),
-        animal_color(animal_color),
-        omnivorous(omnivorous) {}
+    Animal(int m_age, int m_speed, int m_size, gender m_animal_gender, how_move m_animal_move, bool m_has_hearth,
+        bool m_is_limited, color m_animal_color, std::string m_omnivorous)
+        : m_age(m_age),
+        m_speed(m_speed),
+        m_size(m_size),
+        m_animal_gender(m_animal_gender),
+        m_animal_move(m_animal_move),
+        m_has_hearth(m_has_hearth),
+        m_is_limited(m_is_limited),
+        m_animal_color(m_animal_color),
+        m_omnivorous(m_omnivorous) {}
+    Animal(Animal&& obj)
+        : m_age(m_age),
+        m_speed(m_speed),
+        m_size(m_size),
+        m_animal_gender(m_animal_gender),
+        m_animal_move(m_animal_move),
+        m_has_hearth(m_has_hearth),
+        m_is_limited(m_is_limited),
+        m_animal_color(m_animal_color),
+        m_omnivorous(m_omnivorous), m_types(obj.m_types) {
+        obj.m_age = 0;
+        obj.m_speed = 0;
+        obj.m_size = 0;
+        obj.m_animal_gender = unknown_gender;
+        obj.m_animal_move = unknown;
+        obj.m_has_hearth = 0;
+        obj.m_is_limited = 0;
+        obj.m_animal_color = no;
+        obj.m_omnivorous = "";
+        obj.m_types = nullptr;
+    }
+    Animal(const Animal& obj)
+        : m_age(m_age),
+        m_speed(m_speed),
+        m_size(m_size),
+        m_animal_gender(m_animal_gender),
+        m_animal_move(m_animal_move),
+        m_has_hearth(m_has_hearth),
+        m_is_limited(m_is_limited),
+        m_animal_color(m_animal_color),
+        m_omnivorous(m_omnivorous) {
+        for (int i = 0; i < 5; i++)
+        {
+            m_types[i] = obj.m_types[i];
+        }
+    }
     Animal& operator=(Animal&& obj) {
         if (this != &obj)
         {
-            age = obj.age;
-            speed = obj.speed;
-            size = obj.size;
-            animal_gender = obj.animal_gender;
-            animal_move = obj.animal_move;
-            has_heart = obj.has_heart;
-            is_limited = obj.is_limited;
-            animal_color = obj.animal_color;
-            omnivorous = obj.omnivorous;
-            obj.age = 0;
-            obj.speed = 0;
-            obj.size = 0;
-            obj.animal_gender = unknown_gender;
-            obj.animal_move = unknown;
-            obj.has_heart = 0;
-            obj.is_limited = 0;
-            obj.animal_color = no;
-            obj.omnivorous = "";
+            m_age = obj.m_age;
+            m_speed = obj.m_speed;
+            m_size = obj.m_size;
+            m_animal_gender = obj.m_animal_gender;
+            m_animal_move = obj.m_animal_move;
+            m_has_hearth = obj.m_has_hearth;
+            m_is_limited = obj.m_is_limited;
+            m_animal_color = obj.m_animal_color;
+            m_omnivorous = obj.m_omnivorous;
+            delete[] m_types;
+            m_types = obj.m_types;
+            obj.m_age = 0;
+            obj.m_speed = 0;
+            obj.m_size = 0;
+            obj.m_animal_gender = unknown_gender;
+            obj.m_animal_move = unknown;
+            obj.m_has_hearth = 0;
+            obj.m_is_limited = 0;
+            obj.m_animal_color = no;
+            obj.m_omnivorous = "";
+            obj.m_types = nullptr;
         }
         return *this;
     }
-    void setAge(int age) {
-        if (age < 0) {
-            std::cerr << "Age cannot be negative\n";
+    void setm_age(int m_age) {
+        if (m_age < 0) {
+            std::cerr << "m_age cannot be negative\n";
         }
         else {
-            this->age = age;
+            this->m_age = m_age;
         }
     }
 
-    int getAge() {
-        return age;
+    int getm_age() {
+        return m_age;
     }
 
-    void setSize(int size) {
-        if (size < 0) {
-            std::cerr << "Size cannot be negative\n";
-        }
-        else {
-            this->size = size;
-        }
-    }
-
-    int getSize() {
-        return size;
-    }
-
-    void setSpeed(int speed) {
-        if (speed < 1) {
-            std::cerr << "Speed cannot be negative\n";
+    void setm_size(int m_size) {
+        if (m_size < 0) {
+            std::cerr << "m_size cannot be negative\n";
         }
         else {
-            this->speed = speed;
+            this->m_size = m_size;
         }
     }
 
-    int getSpeed() {
-        return speed;
+    int getm_size() {
+        return m_size;
+    }
+
+    void setm_speed(int m_speed) {
+        if (m_speed < 1) {
+            std::cerr << "m_speed cannot be negative\n";
+        }
+        else {
+            this->m_speed = m_speed;
+        }
+    }
+
+    int getm_speed() {
+        return m_speed;
     }
 
     void display() {
-        std::cout << "Age: " << age << std::endl;
-        std::cout << "Speed: " << speed << std::endl;
-        std::cout << "Size: " << size << std::endl;
-        std::cout << "Gender: " << animal_gender << std::endl;
-        std::cout << "Movement: " << animal_move << std::endl;
-        std::cout << "Has Heart: " << (has_heart ? "Yes" : "No") << std::endl;
-        std::cout << "Is Limited: " << (is_limited ? "Yes" : "No") << std::endl;
-        std::cout << "Color: " << animal_color << std::endl;
-        std::cout << "Omnivorous: " << omnivorous << std::endl;
+        std::cout << "m_age: " << m_age << std::endl;
+        std::cout << "m_speed: " << m_speed << std::endl;
+        std::cout << "m_size: " << m_size << std::endl;
+        std::cout << "Gender: " << m_animal_gender << std::endl;
+        std::cout << "Movement: " << m_animal_move << std::endl;
+        std::cout << "Has Heart: " << (m_has_hearth ? "Yes" : "No") << std::endl;
+        std::cout << "Is Limited: " << (m_is_limited ? "Yes" : "No") << std::endl;
+        std::cout << "Color: " << m_animal_color << std::endl;
+        std::cout << "m_omnivorous: " << m_omnivorous << std::endl;
     }
 
     virtual void swim() {
@@ -144,62 +183,62 @@ public:
 Animal::~Animal() {};
 class Fish : public Animal {
 public:
-    bool has_gill = false;
-    bool deep_swimming = false;
-    bool swim_ocean = false;
+    bool m_has_gill = false;
+    bool m_deep_swimming = false;
+    bool m_swim_ocean = false;
     Fish() {}
 
-    Fish(int age, int speed, int size, bool has_gill, bool deep_swimming, bool swim_ocean)
-        : has_gill(has_gill), deep_swimming(deep_swimming), swim_ocean(swim_ocean)
+    Fish(int m_age, int m_speed, int m_size, bool m_has_gill, bool m_deep_swimming, bool m_swim_ocean)
+        : m_has_gill(m_has_gill), m_deep_swimming(m_deep_swimming), m_swim_ocean(m_swim_ocean)
     {
-        setAge(age);
-        setSpeed(speed);
-        setSize(size);
+        setm_age(m_age);
+        setm_speed(m_speed);
+        setm_size(m_size);
     }
     virtual ~Fish() = 0;
 };
 Fish::~Fish() {};
 class Birds : public Animal {
 public:
-    bool has_nose = false;
-    bool fly_high = false;
-    bool can_flight = false;
+    bool m_has_nose = false;
+    bool m_fly_high = false;
+    bool m_can_flight = false;
 
     Birds() {}
 
-    Birds(int age, int speed, int size, bool has_nose, bool fly_high, bool can_flight)
-        : has_nose(has_nose), fly_high(fly_high), can_flight(can_flight)
+    Birds(int m_age, int m_speed, int m_size, bool m_has_nose, bool m_fly_high, bool m_can_flight)
+        : m_has_nose(m_has_nose), m_fly_high(m_fly_high), m_can_flight(m_can_flight)
     {
-        setAge(age);
-        setSpeed(speed);
-        setSize(size);
+        setm_age(m_age);
+        setm_speed(m_speed);
+        setm_size(m_size);
     }
     virtual ~Birds() = 0;
 };
-Birds::~Birds(){}
+Birds::~Birds() {}
 class Mammal : public Animal {
 public:
-    bool has_nose = false;
-    bool laying_eggs = false;
+    bool m_has_nose = false;
+    bool m_laying_eggs = false;
 
     Mammal() {}
 
-    Mammal(int age, int speed, int size, bool has_nose, bool laying_eggs)
-        : has_nose(has_nose), laying_eggs(laying_eggs)
+    Mammal(int m_age, int m_speed, int m_size, bool m_has_nose, bool m_laying_eggs)
+        : m_has_nose(m_has_nose), m_laying_eggs(m_laying_eggs)
     {
-        setAge(age);
-        setSpeed(speed);
-        setSize(size);
+        setm_age(m_age);
+        setm_speed(m_speed);
+        setm_size(m_size);
     }
     virtual ~Mammal() = 0;
 };
-Mammal::~Mammal(){}
+Mammal::~Mammal() {}
 class Fugu : public Fish {
 public:
     Fugu() {}
 
-    Fugu(int age, int speed, int size, bool has_gill, bool deep_swimming, bool swim_ocean)
-        : Fish(age, speed, size, has_gill, deep_swimming, swim_ocean) {}
+    Fugu(int m_age, int m_speed, int m_size, bool m_has_gill, bool m_deep_swimming, bool m_swim_ocean)
+        : Fish(m_age, m_speed, m_size, m_has_gill, m_deep_swimming, m_swim_ocean) {}
 
     void swim() override {
         std::cout << "Swimming like a Fugu" << std::endl;
@@ -210,8 +249,8 @@ class Eagle : public Birds {
 public:
     Eagle() {}
 
-    Eagle(int age, int speed, int size, bool has_nose, bool fly_high, bool can_flight)
-        : Birds(age, speed, size, has_nose, fly_high, can_flight) {}
+    Eagle(int m_age, int m_speed, int m_size, bool m_has_nose, bool m_fly_high, bool m_can_flight)
+        : Birds(m_age, m_speed, m_size, m_has_nose, m_fly_high, m_can_flight) {}
 
     void flight() override {
         std::cout << "Flying like an Eagle" << std::endl;
@@ -222,8 +261,8 @@ class Kangaroo : public Mammal {
 public:
     Kangaroo() {}
 
-    Kangaroo(int age, int speed, int size, bool has_nose, bool laying_eggs)
-        : Mammal(age, speed, size, has_nose, laying_eggs) {}
+    Kangaroo(int m_age, int m_speed, int m_size, bool m_has_nose, bool m_laying_eggs)
+        : Mammal(m_age, m_speed, m_size, m_has_nose, m_laying_eggs) {}
 
     void sound() override {
         std::cout << "Making sound like a Kangaroo" << std::endl;
@@ -239,7 +278,7 @@ int main() {
 
     Kangaroo mammal(6, 15, 50, true, false);
     mammal.sound();
- 
+
     return 0;
 }
 

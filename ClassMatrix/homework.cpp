@@ -2,55 +2,58 @@
 
 #include <iostream>
 using namespace std;
-class clsmatrix {
+class class_matrix {
 private:
-    int rows = -1;
-    int columns = -1;
-    int** matrix;
+    int m_rows = -1;
+    int m_columns = -1;
+    int** m_matrix;
 public:
-    clsmatrix() {
-        while (rows <= 0 || columns <= 0){
-            cout << "input the rows of matrix\n";
-        cin >> rows;
-        cout << "input the columns of matrix\n";
-        cin >> columns;
-    }
-        matrix = (int**)malloc(sizeof(int*) * rows);
-        for (int i = 0; i < rows; i++)
+    class_matrix() {
+        getsize();
+        m_matrix = new int* [m_rows];
+        for (int i = 0; i < m_rows; i++)
         {
-            matrix[i] = (int*)malloc(sizeof(int) * columns);
+            m_matrix[i] = new int [m_columns];
         }
-        cout << "matrix was created\n";
+        cout << "m_matrix was created\n";
+    }
+    void getsize() {
+        while (m_rows <= 0 || m_columns <= 0) {
+            cout << "input the m_rows of m_matrix\n";
+            cin >> m_rows;
+            cout << "input the m_columns of m_matrix\n";
+            cin >> m_columns;
+        }
     }
     void init() {
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < m_rows; i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < m_columns; j++)
             {
-                matrix[i][j] = rand() % 100 + 1;
+                m_matrix[i][j] = rand() % 100 + 1;
             }
         }
     }
     void display() {
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < m_rows; i++)
         {
             cout << "[";
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < m_columns; j++)
             {
-                cout << matrix[i][j] << "|";
+                cout << m_matrix[i][j] << "|";
             }
             cout << "]\n";
         }
     }
     int diagonal() {
         int sum = 0;
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < m_rows; i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < m_columns; j++)
             {
-                if ( i != j && i < j)
+                if (i != j && i < j)
                 {
-                    sum += matrix[i][j];
+                    sum += m_matrix[i][j];
                 }
             }
         }
@@ -62,60 +65,60 @@ public:
         *a = *b;
         *b = temp;
     }
-    void swpmtx1_3rows()
+    void swpmtx1_3m_rows()
     {
-        if (rows <= 3)
+        if (m_rows <= 3)
         {
-            std::cout << "matrix dont have 3 rows";
+            std::cout << "m_matrix dont have 3 m_rows";
             return;
         }
-            for (int j = 0; j < rows; j++)
-            {
-                swap(&matrix[j][1], &matrix[j][3]);
-            }
-    }
-    ~clsmatrix() {
-        cout << "Matrix beeing deleted\n";
-        for (int i = 0; i < rows; i++)
+        for (int j = 0; j < m_rows; j++)
         {
-            free(matrix[i]);
-            matrix[i] = nullptr;
+            swap(&m_matrix[j][1], &m_matrix[j][3]);
         }
-        free(matrix);
-        matrix = nullptr;
     }
-    void swpmtx1_3cols(){
-        if (columns <= 3)
+    ~class_matrix() {
+        cout << "m_matrix beeing deleted\n";
+        for (int i = 0; i < m_rows; i++)
         {
-            std::cout << "This matrix dont have 3 column";
+            delete[] m_matrix[i];
+            m_matrix[i] = nullptr;
+        }
+        delete[] m_matrix;
+        m_matrix = nullptr;
+    }
+    void swpmtx1_3cols() {
+        if (m_columns <= 3)
+        {
+            std::cout << "This m_matrix dont have 3 column";
             return;
         }
-        for (int j = 0; j < columns; j++)
+        for (int j = 0; j < m_columns; j++)
         {
-            swap(&matrix[1][j], &matrix[3][j]);
+            swap(&m_matrix[1][j], &m_matrix[3][j]);
         }
     }
-    clsmatrix(clsmatrix&& other): rows(other.rows), columns(other.columns), matrix(other.matrix) {
-        other.rows = 0;
-        other.columns = 0;
-        other.matrix = nullptr;
+    class_matrix(class_matrix&& other) : m_rows(other.m_rows), m_columns(other.m_columns), m_matrix(other.m_matrix) {
+        other.m_rows = 0;
+        other.m_columns = 0;
+        other.m_matrix = nullptr;
         std::cout << "Move constructor called\n";
     }
 
-    clsmatrix& operator=(clsmatrix&& other)  {
+    class_matrix& operator=(class_matrix&& other) {
         if (this != &other) {
-            for (int i = 0; i < rows; i++) {
-                delete[] matrix[i];
+            for (int i = 0; i < m_rows; i++) {
+                delete[] m_matrix[i];
             }
-            delete[] matrix;
+            delete[] m_matrix;
 
-            rows = other.rows;
-            columns = other.columns;
-            matrix = other.matrix;
+            m_rows = other.m_rows;
+            m_columns = other.m_columns;
+            m_matrix = other.m_matrix;
 
-            other.rows = 0;
-            other.columns = 0;
-            other.matrix = nullptr;
+            other.m_rows = 0;
+            other.m_columns = 0;
+            other.m_matrix = nullptr;
         }
         std::cout << "Move assignment operator called\n";
         return *this;
@@ -123,18 +126,17 @@ public:
 };
 int main()
 {
-    cout << "Hello world";
-    clsmatrix newer;
+    class_matrix newer;
     newer.init();
-    clsmatrix matrix(std::move(clsmatrix()));
-    cout << "this is default created matrix\n";
-    matrix.display();
-    cout << "the sum of matrix diagonal\n" <<matrix.diagonal() << endl;
-    matrix.swpmtx1_3cols();
-    cout << "The swapped matrix(cols)\n";
-    matrix.display();
-    cout << "The swapped matrix(rows)\n";
-    matrix.swpmtx1_3rows();
-    matrix.display();
+    class_matrix m_matrix(std::move(class_matrix()));
+    cout << "this is default created m_matrix\n";
+    m_matrix.display();
+    cout << "the sum of m_matrix diagonal\n" << m_matrix.diagonal() << endl;
+    m_matrix.swpmtx1_3cols();
+    cout << "The swapped m_matrix(cols)\n";
+    m_matrix.display();
+    cout << "The swapped m_matrix(m_rows)\n";
+    m_matrix.swpmtx1_3m_rows();
+    m_matrix.display();
 }
 

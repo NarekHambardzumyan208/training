@@ -1,83 +1,91 @@
 #include <iostream>
 #include <vector>
+using namespace std;
 class Array {
 private:
-    int* ptr;
-    int size;
+    int* m_ptr;
+    int m_size;
 public:
     Array() {
-        std::cout << "Input the size of array\n";
-        std::cin >> size;
-        ptr = new int[size];
+        std::cout << "Input the m_size of array\n";
+        getsize();
+        m_ptr = new int[m_size];
         std::cout << "The array was created\n";
     }
-    Array(Array&& obj) : size(obj.size),ptr(obj.ptr) {
-        obj.size = NULL;
-        obj.ptr = NULL;
+    void getsize() {
+        while (m_size <= 0)
+        {
+            cout << "Input the size of matrix\n";
+            cin >> m_size;
+        }
     }
-    Array& operator=(Array&&obj){
+    Array(Array&& obj) : m_size(obj.m_size), m_ptr(obj.m_ptr) {
+        obj.m_size = 0;
+        obj.m_ptr = nullptr;
+    }
+    Array& operator=(Array&& obj) {
         if (this != &obj)
         {
-            delete[] ptr;
-            ptr = obj.ptr;
-            size = obj.size;
-            obj.ptr = NULL;
-            obj.size = NULL;
-      }
+            delete[] m_ptr;
+            m_ptr = obj.m_ptr;
+            m_size = obj.m_size;
+            obj.m_ptr = nullptr;
+            obj.m_size = 0;
+        }
         return *this;
     }
     Array(const Array& other)
     {
-        delete[] ptr;
-        ptr = nullptr;
-        ptr = new int[other.size];
-        size = other.size;
-        for (int i = 0; i < other.size; i++)
+        delete[] m_ptr;
+        m_ptr = nullptr;
+        m_ptr = new int[other.m_size];
+        m_size = other.m_size;
+        for (int i = 0; i < other.m_size; i++)
         {
-            ptr[i] = other.ptr[i];
+            m_ptr[i] = other.m_ptr[i];
         }
     }
     Array& operator=(const Array& other)
     {
-        if (this != &other){
-           delete[] ptr;
-           ptr = nullptr;
-           ptr = new int[other.size];
-           size = other.size;
-           for (int i = 0; i < other.size; i++)
-           {
-            ptr[i] = other.ptr[i];
-           }
+        if (this != &other) {
+            delete[] m_ptr;
+            m_ptr = nullptr;
+            m_ptr = new int[other.m_size];
+            m_size = other.m_size;
+            for (int i = 0; i < other.m_size; i++)
+            {
+                m_ptr[i] = other.m_ptr[i];
+            }
         }
         return *this;
     }
     void gen_elements()
     {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < m_size; i++)
         {
-            ptr[i] = rand();
+            m_ptr[i] = rand();
         }
     }
     void display()
     {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < m_size; i++)
         {
-            std::cout << ptr[i] << ",";
+            std::cout << m_ptr[i] << ",";
         }
         std::cout << std::endl;
     }
     int at(int num) {
-        if (num < size)
+        if (num < m_size)
         {
-            return ptr[num];
+            return m_ptr[num];
         }
-        return ptr[size];
+        return m_ptr[m_size];
     }
     ~Array()
     {
         std::cout << "The destructor was called\n";
-        delete[] ptr;
-        ptr = nullptr;
+        delete[] m_ptr;
+        m_ptr = nullptr;
         std::cout << "The array was deleted\n";
     }
 };
@@ -89,6 +97,6 @@ int main()
     Array second(std::move(Array()));
     Array third;
     third = std::move(Array());
-   std::cout << first.at(5);
-   std::cout<<std::endl;
+    std::cout << first.at(5);
+    std::cout << std::endl;
 }
