@@ -74,6 +74,21 @@ public:
             obj.omnivorous = "";
             obj.types = nullptr;
         }
+    Animal(const Animal& obj)
+        : age(age),
+        speed(speed),
+        size(size),
+        animal_gender(animal_gender),
+        animal_move(animal_move),
+        has_heart(has_heart),
+        is_limited(is_limited),
+        animal_color(animal_color),
+        omnivorous(omnivorous){
+          for(int i = 0; i < 5; i++ )
+              {
+                  types[i] = obj.types[i];
+              }
+        }
     Animal& operator=(Animal&& obj) {
         if (this != &obj)
         {
