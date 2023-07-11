@@ -79,10 +79,10 @@ public:
         cout << "Matrix beeing deleted\n";
         for (int i = 0; i < rows; i++)
         {
-            free(matrix[i]);
+            delete[] matrix[i];
             matrix[i] = nullptr;
         }
-        free(matrix);
+        delete[] matrix;
         matrix = nullptr;
     }
     void swpmtx1_3cols(){
