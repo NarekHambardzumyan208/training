@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-class Array {
+class Array
+{
 private:
     int* m_ptr;
     int m_size;
@@ -12,18 +13,13 @@ public:
         m_ptr = new int[m_size];
         std::cout << "The array was created\n";
     }
-<<<<<<< HEAD
-    void getsize() {
+    void getsize() 
+    {
         while (m_size <= 0)
         {
             cout << "Input the size of matrix\n";
             cin >> m_size;
         }
-=======
-    Array(Array&& obj) : size(obj.size),ptr(obj.ptr) {
-        obj.size = 0;
-        obj.ptr = nullptr;
->>>>>>> 5daf7641e5364c0aef8e850d5400fc0478dc7832
     }
     Array(Array&& obj) : m_size(obj.m_size), m_ptr(obj.m_ptr) {
         obj.m_size = 0;
@@ -32,21 +28,12 @@ public:
     Array& operator=(Array&& obj) {
         if (this != &obj)
         {
-<<<<<<< HEAD
             delete[] m_ptr;
             m_ptr = obj.m_ptr;
             m_size = obj.m_size;
             obj.m_ptr = nullptr;
             obj.m_size = 0;
         }
-=======
-            delete[] ptr;
-            ptr = obj.ptr;
-            size = obj.size;
-            obj.ptr = nullptr;
-            obj.size = 0;
-      }
->>>>>>> 5daf7641e5364c0aef8e850d5400fc0478dc7832
         return *this;
     }
     Array(const Array& other)

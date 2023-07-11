@@ -28,17 +28,10 @@ enum gender {
 
 class Animal {
 protected:
-<<<<<<< HEAD
     int m_age = 0;
     int m_speed = 0;
     int m_size = 0;
     std::string* m_types = new std::string[5];
-=======
-    int age = 0;
-    int speed = 0;
-    int size = 0;
-    std::string* types = new std::string[5];
->>>>>>> 5daf7641e5364c0aef8e850d5400fc0478dc7832
 public:
     gender m_animal_gender = unknown_gender;
     how_move m_animal_move = unknown;
@@ -49,7 +42,6 @@ public:
 
     Animal() {}
 
-<<<<<<< HEAD
     Animal(int m_age, int m_speed, int m_size, gender m_animal_gender, how_move m_animal_move, bool m_has_hearth,
         bool m_is_limited, color m_animal_color, std::string m_omnivorous)
         : m_age(m_age),
@@ -121,79 +113,6 @@ public:
             obj.m_animal_color = no;
             obj.m_omnivorous = "";
             obj.m_types = nullptr;
-=======
-    Animal(int age, int speed, int size, gender animal_gender, how_move animal_move, bool has_heart,
-        bool is_limited, color animal_color, std::string omnivorous)
-        : age(age),
-        speed(speed),
-        size(size),
-        animal_gender(animal_gender),
-        animal_move(animal_move),
-        has_heart(has_heart),
-        is_limited(is_limited),
-        animal_color(animal_color),
-        omnivorous(omnivorous) {}
-    Animal(Animal&& obj)
-        : age(age),
-        speed(speed),
-        size(size),
-        animal_gender(animal_gender),
-        animal_move(animal_move),
-        has_heart(has_heart),
-        is_limited(is_limited),
-        animal_color(animal_color),
-        omnivorous(omnivorous), types(obj.types){
-            obj.age = 0;
-            obj.speed = 0;
-            obj.size = 0;
-            obj.animal_gender = unknown_gender;
-            obj.animal_move = unknown;
-            obj.has_heart = 0;
-            obj.is_limited = 0;
-            obj.animal_color = no;
-            obj.omnivorous = "";
-            obj.types = nullptr;
-        }
-    Animal(const Animal& obj)
-        : age(age),
-        speed(speed),
-        size(size),
-        animal_gender(animal_gender),
-        animal_move(animal_move),
-        has_heart(has_heart),
-        is_limited(is_limited),
-        animal_color(animal_color),
-        omnivorous(omnivorous){
-          for(int i = 0; i < 5; i++ )
-              {
-                  types[i] = obj.types[i];
-              }
-        }
-    Animal& operator=(Animal&& obj) {
-        if (this != &obj)
-        {
-            age = obj.age;
-            speed = obj.speed;
-            size = obj.size;
-            animal_gender = obj.animal_gender;
-            animal_move = obj.animal_move;
-            has_heart = obj.has_heart;
-            is_limited = obj.is_limited;
-            animal_color = obj.animal_color;
-            omnivorous = obj.omnivorous;
-            delete[] types;
-            types = obj.types;
-            obj.age = 0;
-            obj.speed = 0;
-            obj.size = 0;
-            obj.animal_gender = unknown_gender;
-            obj.animal_move = unknown;
-            obj.has_heart = 0;
-            obj.is_limited = 0;
-            obj.animal_color = no;
-            obj.omnivorous = "";
-            obj.types = nullptr;
->>>>>>> 5daf7641e5364c0aef8e850d5400fc0478dc7832
         }
         return *this;
     }

@@ -8,7 +8,6 @@ private:
     int m_columns = -1;
     int** m_matrix;
 public:
-<<<<<<< HEAD
     class_matrix() {
         getsize();
         m_matrix = new int* [m_rows];
@@ -26,23 +25,6 @@ public:
             cin >> m_columns;
         }
     }
-=======
-    clsmatrix() {
-        getsize();
-        matrix = new int**[rows];
-        for (int i = 0; i < rows; i++)
-        {
-            matrix[i] = new int*[columns];
-        }
-        cout << "matrix was created\n";
-    }
-    void getsize(){        while (rows <= 0 || columns <= 0){
-            cout << "input the rows of matrix\n";
-        cin >> rows;
-        cout << "input the columns of matrix\n";
-        cin >> columns;
-    }}
->>>>>>> 5daf7641e5364c0aef8e850d5400fc0478dc7832
     void init() {
         for (int i = 0; i < m_rows; i++)
         {
@@ -92,16 +74,8 @@ public:
         }
         for (int j = 0; j < m_rows; j++)
         {
-<<<<<<< HEAD
             swap(&m_matrix[j][1], &m_matrix[j][3]);
         }
-=======
-            delete[] matrix[i];
-            matrix[i] = nullptr;
-        }
-        delete[] matrix;
-        matrix = nullptr;
->>>>>>> 5daf7641e5364c0aef8e850d5400fc0478dc7832
     }
     ~class_matrix() {
         cout << "m_matrix beeing deleted\n";
