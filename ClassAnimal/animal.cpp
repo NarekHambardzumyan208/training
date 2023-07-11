@@ -53,18 +53,6 @@ public:
         is_limited(is_limited),
         animal_color(animal_color),
         omnivorous(omnivorous) {}
-    Animal(Animal&&obj) :age(obj.age),speed(obj.speed),size(obj.size),animal_gender(obj.animal_gender),animal_move(obj.animal_move),has_heart(obj.has_heart),is_limited(obj.is_limited),animal_color(obj.animal_color),omnivorous(obj.omnivorous){
-        obj.age = 0;
-        obj.speed = 0; 
-        obj.size = 0; 
-        obj.animal_gender = unknown_gender; 
-        obj.animal_move = unknown;
-            obj.has_heart = 0;
-            obj.is_limited = 0; 
-            obj.animal_color = no;
-            obj.omnivorous = "";
-    
-    }// Animal is abstract classss
     Animal& operator=(Animal&& obj) {
         if (this != &obj)
         {
