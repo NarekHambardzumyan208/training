@@ -31,7 +31,7 @@ protected:
     int age = 0;
     int speed = 0;
     int size = 0;
-
+    std::string* types = new std::string[5];
 public:
     gender animal_gender = unknown_gender;
     how_move animal_move = unknown;
@@ -53,6 +53,27 @@ public:
         is_limited(is_limited),
         animal_color(animal_color),
         omnivorous(omnivorous) {}
+    Animal(Animal&& obj)
+        : age(age),
+        speed(speed),
+        size(size),
+        animal_gender(animal_gender),
+        animal_move(animal_move),
+        has_heart(has_heart),
+        is_limited(is_limited),
+        animal_color(animal_color),
+        omnivorous(omnivorous), types(obj.types){
+            obj.age = 0;
+            obj.speed = 0;
+            obj.size = 0;
+            obj.animal_gender = unknown_gender;
+            obj.animal_move = unknown;
+            obj.has_heart = 0;
+            obj.is_limited = 0;
+            obj.animal_color = no;
+            obj.omnivorous = "";
+            obj.types = nullptr;
+        }
     Animal& operator=(Animal&& obj) {
         if (this != &obj)
         {
@@ -65,6 +86,8 @@ public:
             is_limited = obj.is_limited;
             animal_color = obj.animal_color;
             omnivorous = obj.omnivorous;
+            delete[] types;
+            types = obj.types;
             obj.age = 0;
             obj.speed = 0;
             obj.size = 0;
@@ -74,6 +97,7 @@ public:
             obj.is_limited = 0;
             obj.animal_color = no;
             obj.omnivorous = "";
+            obj.types = nullptr;
         }
         return *this;
     }
