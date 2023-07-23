@@ -145,6 +145,11 @@ public:
             cerr << "There wasnt figure\n;";
             throw abort;
         }
+        else if (x > 8 || y > 8)
+        {
+            cerr << "the cordinats are illegal\n";
+            throw abort;
+        }
         for (size_t i = 0; i < m_rows; i++)
         {
             if (W_Chessmate_types[i] == m_matrix[x][y]) {
@@ -162,6 +167,11 @@ public:
             cout << "Input the y\n";
             cin >> move_y;
         }
+        if (move_x > 8 || move_y > 8)
+        {
+            cerr << "the cordinats are illegal\n";
+            throw abort;
+        }
         if (move_x == x && move_y == y)
         {
             cerr << "Error:you want to dont move figure\n";
@@ -174,23 +184,318 @@ public:
                 throw abort;
             }
         }
-        if (m_matrix[x][y] == "  W.Pawn " &&(( move_x == ++x )||( x == 1 && move_x == x + 2) ||( check_coords(++x,++y) && move_x == ++x && move_y == ++y)))
+        if (m_matrix[x][y] == "  W.Pawn " && ((x+1 != 8 && y + 1 != 8 && check_coords(1 + x, 1 + y) && move_x == 1 + x && move_y == 1 + y) || (x == 1 && move_x == x + 2 && move_y == y ) || (x  + 1 != 8 && move_x == x + 1) || (x + 1 != 8 && y - 1 != 0 && check_coords(1 + x, y - 1) && move_x == 1 + x && move_y == y - 1)))
         {
-            swap(m_matrix[move_x][move_y], m_matrix[x][y]);
-            m_matrix[x][y] = " _______ ";
+                swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                x = -1;
+                y = -1;
+                move_x = -1;
+                move_y = -1;
+        } 
+        else if (m_matrix[x][y] == " W.Knight " && ((move_x == 1 + x && move_y == y + 2) || (move_y == 1 + y && move_x == x + 2) || (y - 2 > -1 && move_x == 1 + x && move_y == y - 2) || (y - 1 > -1 && move_y == y - 1 && move_x == x + 2) || (y - 2 > -1 && x-1 > -1 && move_x == x-1 && move_y == y - 2) || (x - 1 > -1 && move_y == y + 2 && move_x == x - 1) || (y - 1  >= 0 && x - 2 >= 0 && move_y == y - 1 && move_x == x - 2) || (y + 1 >= 0 && x - 2 >= 0 && move_y == y + 1 && move_x == x - 2)))
+        {
+            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+            x = -1;
+            y = -1;
+            move_x = -1;
+            move_y = -1;
         }
-        if(m_matrix[x][y] == "W.Knight" && ((move_x == x) || (move_y == y) )){}
+        else if (m_matrix[x][y] == " W.King " && ((x != 7 && move_x == x + 1) && (x != 0 && move_x == x - 1) && (y != 7 && move_y == y + 1) && (y != 0 && move_y == y+1) && (x + 1 != 8 && y + 1 != 8 && move_x == x + 1 && move_y == y + 1 ) && (x + 1 != 8 && y - 1 != -1 && move_x == x + 1 && move_y == y - 1)
+            && (x - 1 != -1 && y - 1 != -1 && move_x == x - 1 && move_y == y - 1) && (x - 1 != -1 && y + 1 != 8 && move_x == x - 1 && move_y == y + 1)))
+        {
+            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+            x = -1;
+            y = -1;
+            move_x = -1;
+            move_y = -1;
+        }
+        else if (m_matrix[x][y] == " W.Rook ")
+        {
+            int j = 20;
+            if (move_x == x && move_y > y)
+            {
+                for (int i = y  + 1; i <= move_y; i++)
+                {
+                    if (m_matrix[x][i] != " _______ ") 
+                    {
+                        j = i;
+                        break;
+                    }
+                }
+                for (int i = y; i <= j; ++i)
+                {
+                    if (move_y <= j && move_y == y + i)
+                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
+                        break;
+                    }
+                }
+            }
+            else if (move_x == x && move_y < y)
+            {
+                for (int i = y + 1; i <= move_y; i--)
+                {
+                    if (m_matrix[x][i] != " _______ ")
+                    {
+                        j = i;
+                        break;
+                    }
+                }
+                for (int i = y; i <= j; ++i)
+                {
+                    if (move_y <= j && move_y == y - i)
+                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
+                        break;
+                    }
+                }
+            }
+            else if (move_x > x && move_y == y)
+            {
+                for (int i = x + 1; i <= move_x; i++)
+                {
+                    if (m_matrix[i][y] != " _______ ")
+                    {
+                        j = i;
+                        break;
+                    }
+                }
+                 for (int i = x; i <= j; ++i)
+                {
+                    if (move_x <= j && move_x == x + i)
+                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
+                        break;
+                    }
+                }
+            }
+            else if (move_x < x && move_y == y)
+            {
+                for (int i = x + 1; i <= move_x; i--)
+                {
+                    if (m_matrix[i][y] != " _______ ")
+                    {
+                        j = i;
+                        break;
+                    }
+                }
+                for (int i = x; i <= j; ++i)
+                {
+                    if (move_x <= j && move_x == x - i)
+                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
+                        break;
+                    }
+                }
+            }
+            else 
+            { 
+                cerr << "Error:your rook want to do incorrect move\n"; 
+                throw abort;
+            }
+        }
+         else if (m_matrix[x][y] == " W.Bishop ")
+        {
+            int lim_x,lim_y  = 8;
+            bool a = false;
+            if (move_x > x && move_y  > y)
+            {
+                for (int i = x; i <= move_x; i++)
+                {
+                    for (int j = y; j <= move_y; j++)
+                    {
+                        if (m_matrix[i][j] != " _______ ")
+                        {
+                            lim_x = i;
+                            lim_y = j;
+                            a = true;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+                a = false;
+                for (int i = x; i <= lim_x; i++)
+                {
+                    for (int j = y; j <= lim_y; j++)
+                    {
+                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
+                        {
+                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                            x = -1;
+                            y = -1;
+                            move_x = -1;
+                            move_y = -1;
+                            a = true;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (move_x < x && move_y < y)
+            {
+                for (int i = x; i >= move_x; i--)
+                {
+                    for (int j = y; j >= move_y; j--)
+                    {
+                        if (m_matrix[i][j] != " _______ ")
+                        {
+                            lim_x = i;
+                            lim_y = j;
+                            a = true;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+                a = false;
+                for (int i = x; i >= lim_x; i--)
+                {
+                    for (int j = y; j >= lim_y; j--)
+                    {
+                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
+                        {
+                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                            x = -1;
+                            y = -1;
+                            move_x = -1;
+                            move_y = -1;
+                            a = true;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (move_x < x && move_y > y)
+            {
+                a = false;
+                for (int i = x; i >= move_x; i--)
+                {
+                    for (int j = y; j <= move_y; j++)
+                    {
+                        if (m_matrix[i][j] != " _______ ")
+                        {
+                            lim_x = i;
+                            lim_y = j;
+                            a = true;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+                a = false;
+                for (int i = x; i >= lim_x; i--)
+                {
+                    for (int j = lim_y; j <= lim_y; j++)
+                    {
+                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + i)
+                        {
+                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                            x = -1;
+                            y = -1;
+                            move_x = -1;
+                            a = true;
+                            move_y = -1;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (move_x > x && move_y < y)
+            {
+                for (int i = x; i <= move_x; i++)
+                {
+                    for (int j = y; j >= move_y; j--)
+                    {
+                        if (m_matrix[i][j] != " _______ ")
+                        {
+                            lim_x = i;
+                            lim_y = j;
+                            a = true;
+                            break; 
+                        }
+                    }
+                    if (a == true)
+                    {
+                        break;
+                  }
+                }
+                a = false;
+                for (int i = x; i <= lim_x; i++)
+                {
+                    for (int j = lim_y; j >= lim_y; j--)
+                    {
+                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
+                        {
+                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                            x = -1;
+                            y = -1;
+                            move_x = -1;
+                            move_y = -1;
+                            a = true;
+                            break;
+                        }
+                    }
+                    if (a)
+                    {
+                        break;
+                    }
+                }
+            }
+            else 
+            {
+                cerr << "Your bishop want to do illegal move\n";
+                throw abort;
+            }
+        }
         else
         {
             cerr << "Dont Correct move\n";
             throw abort;
         }
     }
-    void swap(string& a, string& b)
+    void swap(string* a, string* b)
     {
-        string temp = a;
-        a = b;
-        b = temp;
+        string temp = *a;
+        *a = *b;
+        *b = " _______ ";
     }
     void start() {
         def_init();
@@ -199,6 +504,25 @@ public:
         cout << "coordinats of chessman that you want to play\n";
         cout << "the secont you must be right input the coordinats\n";
         cout << "where you want to go your figure\n Nice game\n";
+        display();
+       
+        White_move_figure();
+        system("cls");
+        display();
+        White_move_figure();
+        system("cls");
+        display();
+        White_move_figure();
+        system("cls");
+        display();
+        White_move_figure();
+        system("cls");
+        display();
+        White_move_figure();
+        system("cls");
+        display();
+        White_move_figure();
+        system("cls");
         display();
         White_move_figure();
         system("cls");
