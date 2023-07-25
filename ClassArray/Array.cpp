@@ -39,10 +39,8 @@ public:
     }
     Array(const Array& other)
     {
-        delete[] m_ptr;
-        m_ptr = nullptr;
-        m_ptr = new Type[other.m_size];
         m_size = other.m_size;
+        m_ptr = new Type[m_size];
         for (int i = 0; i < other.m_size; i++)
         {
             m_ptr[i] = other.m_ptr[i];
