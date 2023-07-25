@@ -1,0 +1,14 @@
+﻿  chessmate.cpp
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(325,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(326,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(366,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(367,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(408,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(409,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(449,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\OneDrive\Рабочий стол\training\chessmate\chessmate.cpp(450,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Generating code
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 116 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  chessmate.vcxproj -> C:\Users\User\OneDrive\Рабочий стол\training\chessmate\x64\Release\chessmate.exe
