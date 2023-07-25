@@ -2,18 +2,19 @@
 
 #include <iostream>
 using namespace std;
+template<typename Type>
 class class_matrix {
 private:
-    int m_rows = -1;
-    int m_columns = -1;
-    int** m_matrix;
+    size_t m_rows = -1;
+    size_t m_columns = -1;
+    Type** m_matrix;
 public:
     class_matrix() {
         getsize();
-        m_matrix = new int* [m_rows];
+        m_matrix = new Type* [m_rows];
         for (int i = 0; i < m_rows; i++)
         {
-            m_matrix[i] = new int [m_columns];
+            m_matrix[i] = new Type [m_columns];
         }
         cout << "m_matrix was created\n";
     }
@@ -45,8 +46,8 @@ public:
             cout << "]\n";
         }
     }
-    int diagonal() {
-        int sum = 0;
+    Type diagonal() {
+        Type sum = 0;
         for (int i = 0; i < m_rows; i++)
         {
             for (int j = 0; j < m_columns; j++)
@@ -59,9 +60,9 @@ public:
         }
         return sum;
     }
-    void swap(int* a, int* b)
+    void swap(Type* a, Type* b)
     {
-        int temp = *a;
+        Type temp = *a;
         *a = *b;
         *b = temp;
     }
@@ -126,9 +127,9 @@ public:
 };
 int main()
 {
-    class_matrix newer;
+    class_matrix<int> newer;
     newer.init();
-    class_matrix m_matrix(std::move(class_matrix()));
+    class_matrix<int> m_matrix(std::move(class_matrix<int>()));
     cout << "this is default created m_matrix\n";
     m_matrix.display();
     cout << "the sum of m_matrix diagonal\n" << m_matrix.diagonal() << endl;

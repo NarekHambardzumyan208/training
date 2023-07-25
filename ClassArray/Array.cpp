@@ -1,16 +1,17 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+template<typename Type>
 class Array
 {
 private:
-    int* m_ptr;
-    int m_size;
+    Type* m_ptr;
+    size_t m_size;
 public:
     Array() {
         std::cout << "Input the m_size of array\n";
         getsize();
-        m_ptr = new int[m_size];
+        m_ptr = new Type[m_size];
         std::cout << "The array was created\n";
     }
     void getsize() 
@@ -40,7 +41,7 @@ public:
     {
         delete[] m_ptr;
         m_ptr = nullptr;
-        m_ptr = new int[other.m_size];
+        m_ptr = new Type[other.m_size];
         m_size = other.m_size;
         for (int i = 0; i < other.m_size; i++)
         {
@@ -52,7 +53,7 @@ public:
         if (this != &other) {
             delete[] m_ptr;
             m_ptr = nullptr;
-            m_ptr = new int[other.m_size];
+            m_ptr = new Type[other.m_size];
             m_size = other.m_size;
             for (int i = 0; i < other.m_size; i++)
             {
@@ -76,7 +77,7 @@ public:
         }
         std::cout << std::endl;
     }
-    int at(int num) {
+    Type at(int num) {
         if (num < m_size)
         {
             return m_ptr[num];
@@ -93,12 +94,13 @@ public:
 };
 int main()
 {
-    Array first;
+    Array<int> first;
     first.gen_elements();
     first.display();
-    Array second(std::move(Array()));
-    Array third;
-    third = std::move(Array());
+    Array<int> second(std::move(Array<int>()));
+    Array<int> third;
+    third = std::move(Array<int>());
+    Array<float> Fourth;
     std::cout << first.at(5);
     std::cout << std::endl;
 }

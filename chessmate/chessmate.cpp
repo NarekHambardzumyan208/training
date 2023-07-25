@@ -327,6 +327,14 @@ public:
                             a = true;
                             break;
                         }
+                        else if (i == move_x && j == move_y)
+                        {
+                            lim_x = 8;
+                            lim_y = 8;
+                            a = 1;
+                            break;
+                        }
+
                     }
                     if (a)
                     {
@@ -440,9 +448,9 @@ public:
             }
             else if (move_x > x && move_y < y)
             {
-                for (int i = x; i <= move_x; i++)
+                for (int i = x + 1; i <= move_x; i++)
                 {
-                    for (int j = y; j >= move_y; j--)
+                    for (int j = i; j >= move_y; j--)
                     {
                         if (m_matrix[i][j] != " _______ ")
                         {
@@ -451,6 +459,15 @@ public:
                             a = true;
                             break; 
                         }
+                        else if (i == move_x && j == move_y)
+                        {
+                            lim_x = 8;
+                            lim_y = 8;
+                            a = 1;
+                            break;
+                        }
+                        break;
+
                     }
                     if (a == true)
                     {
@@ -458,9 +475,9 @@ public:
                   }
                 }
                 a = false;
-                for (int i = x; i <= lim_x; i++)
+                for (int i = x + 1; i <= lim_x; i++)
                 {
-                    for (int j = lim_y; j >= lim_y; j--)
+                    for (int j = y + 1; j >= lim_y; j--)
                     {
                         if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
                         {
