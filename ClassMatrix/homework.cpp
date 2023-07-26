@@ -107,11 +107,17 @@ public:
     }
     class_matrix(const class_matrix& other) : m_rows(other.m_rows),m_columns(other.m_columns){
          m_matrix = new Type*[m_rows];
-         for(int i = 0;i <= m_rows;++i)
+         for(int i = 0;i < m_rows;++i)
              {
                  m_matrix[i] = new Type[m_columns];
              }
-        
+        for(int i = 0;i < m_rows; ++i)
+            {
+             for(int j = 0; j < m_columns; j++)
+                 {
+                     m_matrix[i][j] = other.m_matrix[i][j];
+                 }
+            }
     }
     class_matrix& operator=(class_matrix&& other) {
         if (this != &other) {
