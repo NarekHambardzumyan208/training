@@ -13,8 +13,9 @@ private:
     int move_x = -1;
     int move_y = -1;
     string** m_matrix;
-    string B_Chessmate_types[9]{ " B.Rook "," B.Knight "," B.Bishop "," B.Queen "," B.King ","  W.Pawn " };
-    string W_Chessmate_types[9]{ " W.Rook "," W.Knight "," W.Bishop "," W.Queen "," W.King ","  W.Pawn " };
+
+    std::string B_Chessmate_types[9]{ " B.Rook "," B.Knight "," B.Bishop "," B.Queen "," B.King ","  W.Pawn " };
+    std::string W_Chessmate_types[9]{ " W.Rook "," W.Knight "," W.Bishop "," W.Queen "," W.King ","  W.Pawn " };  
 protected:
     bool check_coords() {
         if (x < 0 || y < 0)
@@ -68,7 +69,7 @@ protected:
     }
 #pragma endregion default board
 public:
-#pragma region constructors operator= and destructors
+#pragma region constructors and destructors
     Board() {
         m_matrix = new string * [m_rows];
         for (int i = 0; i < m_rows; i++)
@@ -85,32 +86,7 @@ public:
         delete[] m_matrix;
         m_matrix = nullptr;
     }
-    Board(Board&& other) noexcept : m_rows(other.m_rows), m_columns(other.m_columns), m_matrix(other.m_matrix) {
-        other.m_rows = 0;
-        other.m_columns = 0;
-        other.m_matrix = nullptr;
-        std::cout << "Move constructor called\n";
-    }
-
-    Board& operator= (Board&& other) noexcept {
-        if (this != &other) {
-            for (int i = 0; i < m_rows; i++) {
-                delete[] m_matrix[i];
-            }
-            delete[] m_matrix;
-
-            m_rows = other.m_rows;
-            m_columns = other.m_columns;
-            m_matrix = other.m_matrix;
-
-            other.m_rows = 0;
-            other.m_columns = 0;
-            other.m_matrix = nullptr;
-        }
-        std::cout << "Move assignment operator called\n";
-        return *this;
-    }
-#pragma endregion constructors operator= and destructors
+#pragma endregion constructors and destructors
 #pragma region displayfunc
     void display() {
         char a = 'A';
@@ -133,22 +109,18 @@ public:
     }
 #pragma endregion display function
     void W_select_figure() {
-        while (x < 0 && y < 0)
-        {
-            cout << "Input the coordinats of figure that you want to move(first x and y)\n";
-            cin >> x;
-            cout << "Input the y\n";
-            cin >> y;
-        }
+        getcoords();
         if (check_coords() == 0)
         {
-            cerr << "There wasnt figure\n;";
-            throw abort;
+            cerr << "There wasnt figure\n";
+            cout << "Something went wrong\n";
+            W_select_figure();
         }
-        else if (x > 8 || y > 8)
+        else if (x > m_rows || y > m_columns)
         {
             cerr << "the cordinats are illegal\n";
-            throw abort;
+            cout << "Something went wrong\n";
+            W_select_figure();
         }
         for (size_t i = 0; i < m_rows; i++)
         {
@@ -156,43 +128,53 @@ public:
                 return;
             }
         }
-        throw abort;
-
-    }
-    void White_move_figure() {
+        cout << "Something went wrong\n";
         W_select_figure();
+    }
+    void getcoords() {
+        while (x < 0 && y < 0)
+        {
+            cout << "Input the coordinats of figure that you want to move(first x and y)\n";
+            cin >> x;
+            cout << "Input the y\n";
+            cin >> y;
+        }
+    }
+    void getmove()
+    {
         while (move_x < 0 && move_y < 0) {
             cout << "Where you want to move that figure\n";
             cin >> move_x;
             cout << "Input the y\n";
             cin >> move_y;
         }
+    }
+    void White_move_figure() {
+        W_select_figure();
+        getmove();
         if (move_x > 8 || move_y > 8)
         {
             cerr << "the cordinats are illegal\n";
-            throw abort;
+            cout << "Something went wrong\n";
+            getmove();
         }
         if (move_x == x && move_y == y)
         {
             cerr << "Error:you want to dont move figure\n";
-            throw abort;
+            cout << "Something went wrong\n";
+            White_move_figure();
         }
         for (int i = 0; i < m_rows; i++)
         {
             if (W_Chessmate_types[i] == m_matrix[move_x][move_y]) {
                 cerr << "ERROR:There was your figure\n";
-                throw abort;
+                cout << "Something went wrong\n";
+                White_move_figure();
             }
         }
-        if (m_matrix[x][y] == "  W.Pawn " && ((x+1 != 8 && y + 1 != 8 && check_coords(1 + x, 1 + y) && move_x == 1 + x && move_y == 1 + y) || (x == 1 && move_x == x + 2 && move_y == y ) || (x  + 1 != 8 && move_x == x + 1) || (x + 1 != 8 && y - 1 != 0 && check_coords(1 + x, y - 1) && move_x == 1 + x && move_y == y - 1)))
-        {
-                swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
-                x = -1;
-                y = -1;
-                move_x = -1;
-                move_y = -1;
-        } 
-        else if (m_matrix[x][y] == " W.Knight " && ((move_x == 1 + x && move_y == y + 2) || (move_y == 1 + y && move_x == x + 2) || (y - 2 > -1 && move_x == 1 + x && move_y == y - 2) || (y - 1 > -1 && move_y == y - 1 && move_x == x + 2) || (y - 2 > -1 && x-1 > -1 && move_x == x-1 && move_y == y - 2) || (x - 1 > -1 && move_y == y + 2 && move_x == x - 1) || (y - 1  >= 0 && x - 2 >= 0 && move_y == y - 1 && move_x == x - 2) || (y + 1 >= 0 && x - 2 >= 0 && move_y == y + 1 && move_x == x - 2)))
+#pragma region white figures
+#pragma region white pawn
+        if (m_matrix[x][y] == "  W.Pawn " && ((x + 1 != 8 && y + 1 != 8 && check_coords(1 + x, 1 + y) && move_x == 1 + x && move_y == 1 + y) || (x == 1 && move_x == x + 2 && move_y == y) || (x + 1 != 8 && move_x == x + 1) || (x + 1 != 8 && y - 1 != 0 && check_coords(1 + x, y - 1) && move_x == 1 + x && move_y == y - 1)))
         {
             swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
             x = -1;
@@ -200,8 +182,9 @@ public:
             move_x = -1;
             move_y = -1;
         }
-        else if (m_matrix[x][y] == " W.King " && ((x != 7 && move_x == x + 1) && (x != 0 && move_x == x - 1) && (y != 7 && move_y == y + 1) && (y != 0 && move_y == y+1) && (x + 1 != 8 && y + 1 != 8 && move_x == x + 1 && move_y == y + 1 ) && (x + 1 != 8 && y - 1 != -1 && move_x == x + 1 && move_y == y - 1)
-            && (x - 1 != -1 && y - 1 != -1 && move_x == x - 1 && move_y == y - 1) && (x - 1 != -1 && y + 1 != 8 && move_x == x - 1 && move_y == y + 1)))
+#pragma endregion white pawn        
+#pragma region white knight
+        else if (m_matrix[x][y] == " W.Knight " && ((move_x == 1 + x && move_y == y + 2) || (move_y == 1 + y && move_x == x + 2) || (y - 2 > -1 && move_x == 1 + x && move_y == y - 2) || (y - 1 > -1 && move_y == y - 1 && move_x == x + 2) || (y - 2 > -1 && x - 1 > -1 && move_x == x - 1 && move_y == y - 2) || (x - 1 > -1 && move_y == y + 2 && move_x == x - 1) || (y - 1 >= 0 && x - 2 >= 0 && move_y == y - 1 && move_x == x - 2) || (y + 1 >= 0 && x - 2 >= 0 && move_y == y + 1 && move_x == x - 2)))
         {
             swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
             x = -1;
@@ -209,14 +192,27 @@ public:
             move_x = -1;
             move_y = -1;
         }
+#pragma endregion white knight
+#pragma region white king
+        else if (m_matrix[x][y] == " W.King " && ((x != 7 && move_x == x + 1) && (x != 0 && move_x == x - 1) && (y != 7 && move_y == y + 1) && (y != 0 && move_y == y + 1) && (x + 1 != 8 && y + 1 != 8 && move_x == x + 1 && move_y == y + 1) && (x + 1 != 8 && y - 1 != -1 && move_x == x + 1 && move_y == y - 1)
+        && (x - 1 != -1 && y - 1 != -1 && move_x == x - 1 && move_y == y - 1) && (x - 1 != -1 && y + 1 != 8 && move_x == x - 1 && move_y == y + 1)))
+        {
+            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+            x = -1;
+            y = -1;
+            move_x = -1;
+            move_y = -1;
+        }
+#pragma endregion white king
+#pragma region white rook
         else if (m_matrix[x][y] == " W.Rook ")
         {
             int j = 20;
             if (move_x == x && move_y > y)
             {
-                for (int i = y  + 1; i <= move_y; i++)
+                for (int i = y + 1; i <= move_y; i++)
                 {
-                    if (m_matrix[x][i] != " _______ ") 
+                    if (m_matrix[x][i] != " _______ ")
                     {
                         j = i;
                         break;
@@ -268,7 +264,7 @@ public:
                         break;
                     }
                 }
-                 for (int i = x; i <= j; ++i)
+                for (int i = x; i <= j; ++i)
                 {
                     if (move_x <= j && move_x == x + i)
                     {
@@ -304,205 +300,317 @@ public:
                     }
                 }
             }
-            else 
-            { 
-                cerr << "Error:your rook want to do incorrect move\n"; 
+            else
+            {
+                cerr << "Error:your rook want to do incorrect move\n";
                 throw abort;
             }
         }
-         else if (m_matrix[x][y] == " W.Bishop ")
+#pragma endregion white rook 
+#pragma region white bishop
+        else if (m_matrix[x][y] == " W.Bishop ")
         {
-            int lim_x,lim_y  = 8;
-            bool a = false;
-            if (move_x > x && move_y  > y)
+            int lim_x = 8, lim_y = 8;
+            if (move_x > x && move_y > y)
             {
-                for (int i = x; i <= move_x; i++)
+                for (int i = x + 1, j = y + 1; i < 8 && j < 8; ++i, ++j) {
+                    if (m_matrix[i][j] != " _______ ") {
+                        lim_x = i;
+                        lim_y = j;
+                        break;
+                    }
+                }
+                for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
                 {
-                    for (int j = y; j <= move_y; j++)
+                    if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j || lim_x == 8 && lim_y == 8 && move_x == x + i && move_y == y + j)
                     {
-                        if (m_matrix[i][j] != " _______ ")
-                        {
-                            lim_x = i;
-                            lim_y = j;
-                            a = true;
-                            break;
-                        }
-                        else if (i == move_x && j == move_y)
-                        {
-                            lim_x = 8;
-                            lim_y = 8;
-                            a = 1;
-                            break;
-                        }
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
+                        break;
+                    }
+                }
 
-                    }
-                    if (a)
-                    {
-                        break;
-                    }
-                }
-                a = false;
-                for (int i = x; i <= lim_x; i++)
-                {
-                    for (int j = y; j <= lim_y; j++)
-                    {
-                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
-                        {
-                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
-                            x = -1;
-                            y = -1;
-                            move_x = -1;
-                            move_y = -1;
-                            a = true;
-                            break;
-                        }
-                    }
-                    if (a)
-                    {
-                        break;
-                    }
-                }
+                lim_x = 8;
+                lim_y = 8;
             }
             else if (move_x < x && move_y < y)
             {
-                for (int i = x; i >= move_x; i--)
-                {
-                    for (int j = y; j >= move_y; j--)
-                    {
-                        if (m_matrix[i][j] != " _______ ")
-                        {
-                            lim_x = i;
-                            lim_y = j;
-                            a = true;
-                            break;
-                        }
-                    }
-                    if (a)
-                    {
+                for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; --i, --j) {
+                    if (m_matrix[i][j] != " _______ ") {
+                        lim_x = i;
+                        lim_y = j;
                         break;
                     }
                 }
-                a = false;
-                for (int i = x; i >= lim_x; i--)
+                for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
                 {
-                    for (int j = y; j >= lim_y; j--)
+                    if (move_x >= lim_x && move_y >= lim_y && move_x == x - i && move_y == y - j || lim_x == 8 && lim_y == 8 && move_x == x - i && move_y == y - j)
                     {
-                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
-                        {
-                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
-                            x = -1;
-                            y = -1;
-                            move_x = -1;
-                            move_y = -1;
-                            a = true;
-                            break;
-                        }
-                    }
-                    if (a)
-                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
                         break;
                     }
                 }
+
+                lim_x = 8;
+                lim_y = 8;
             }
             else if (move_x < x && move_y > y)
             {
-                a = false;
-                for (int i = x; i >= move_x; i--)
-                {
-                    for (int j = y; j <= move_y; j++)
-                    {
-                        if (m_matrix[i][j] != " _______ ")
-                        {
-                            lim_x = i;
-                            lim_y = j;
-                            a = true;
-                            break;
-                        }
-                    }
-                    if (a)
-                    {
+                for (int i = x - 1, j = y + 1; i >= 0 && j < 8; --i, ++j) {
+                    if (m_matrix[i][j] != " _______ ") {
+                        lim_x = i;
+                        lim_y = j;
                         break;
                     }
                 }
-                a = false;
-                for (int i = x; i >= lim_x; i--)
+                for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
                 {
-                    for (int j = lim_y; j <= lim_y; j++)
+                    if (move_x >= lim_x && move_y <= lim_y && move_x == x - i && move_y == y + j || lim_x == 8 && lim_y == 8 && move_x == x - i && move_y == y + j)
                     {
-                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + i)
-                        {
-                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
-                            x = -1;
-                            y = -1;
-                            move_x = -1;
-                            a = true;
-                            move_y = -1;
-                            break;
-                        }
-                    }
-                    if (a)
-                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
                         break;
                     }
                 }
             }
             else if (move_x > x && move_y < y)
             {
-                for (int i = x + 1; i <= move_x; i++)
-                {
-                    for (int j = i; j >= move_y; j--)
-                    {
-                        if (m_matrix[i][j] != " _______ ")
-                        {
-                            lim_x = i;
-                            lim_y = j;
-                            a = true;
-                            break; 
-                        }
-                        else if (i == move_x && j == move_y)
-                        {
-                            lim_x = 8;
-                            lim_y = 8;
-                            a = 1;
-                            break;
-                        }
+                for (int i = x + 1, j = y - 1; i < 8 && j >= 0; ++i, --j) {
+                    if (m_matrix[i][j] != " _______ ") {
+                        lim_x = i;
+                        lim_y = j;
                         break;
+                    }
+                }
+                for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
+                {
+                    if (move_x <= lim_x && move_y >= lim_y && move_x == x + i && move_y == y - j || lim_x == 8 && lim_y == 8 && move_x == x + i && move_y == y - j)
+                    {
+                        swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                        x = -1;
+                        y = -1;
+                        move_x = -1;
+                        move_y = -1;
+                        break;
+                    }
+                }
 
-                    }
-                    if (a == true)
-                    {
-                        break;
-                  }
-                }
-                a = false;
-                for (int i = x + 1; i <= lim_x; i++)
-                {
-                    for (int j = y + 1; j >= lim_y; j--)
-                    {
-                        if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j)
-                        {
-                            swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
-                            x = -1;
-                            y = -1;
-                            move_x = -1;
-                            move_y = -1;
-                            a = true;
-                            break;
-                        }
-                    }
-                    if (a)
-                    {
-                        break;
-                    }
-                }
             }
-            else 
+            else
             {
                 cerr << "Your bishop want to do illegal move\n";
                 throw abort;
             }
         }
-        else
+#pragma endregion white bishop
+#pragma region white queen
+     else if (m_matrix[x][y] == " W.Queen ")
+     {
+         int lim_x = 8, lim_y = 8;
+         if (move_x > x && move_y > y)
+         {
+             for (int i = x + 1, j = y + 1; i < 8 && j < 8; ++i, ++j) {
+                 if (m_matrix[i][j] != " _______ ") {
+                     lim_x = i;
+                     lim_y = j;
+                     break;
+                 }
+             }
+             for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
+             {
+                 if (move_x <= lim_x && move_y <= lim_y && move_x == x + i && move_y == y + j || lim_x == 8 && lim_y == 8 && move_x == x + i && move_y == y + j)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+
+             lim_x = 8;
+             lim_y = 8;
+         }
+         else if (move_x < x && move_y < y)
+         {
+             for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; --i, --j) {
+                 if (m_matrix[i][j] != " _______ ") {
+                     lim_x = i;
+                     lim_y = j;
+                     break;
+                 }
+             }
+             for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
+             {
+                 if (move_x >= lim_x && move_y >= lim_y && move_x == x - i && move_y == y - j || lim_x == 8 && lim_y == 8 && move_x == x - i && move_y == y - j)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+
+             lim_x = 8;
+             lim_y = 8;
+         }
+         else if (move_x < x && move_y > y)
+         {
+             for (int i = x - 1, j = y + 1; i >= 0 && j < 8; --i, ++j) {
+                 if (m_matrix[i][j] != " _______ ") {
+                     lim_x = i;
+                     lim_y = j;
+                     break;
+                 }
+             }
+             for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
+             {
+                 if (move_x >= lim_x && move_y <= lim_y && move_x == x - i && move_y == y + j || lim_x == 8 && lim_y == 8 && move_x == x - i && move_y == y + j)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+         }
+         else if (move_x > x && move_y < y)
+         {
+             for (int i = x + 1, j = y - 1; i < 8 && j >= 0; ++i, --j) {
+                 if (m_matrix[i][j] != " _______ ") {
+                     lim_x = i;
+                     lim_y = j;
+                     break;
+                 }
+             }
+             for (int i = 0, j = 0; i < 8 && j < 8; ++i, ++j)
+             {
+                 if (move_x <= lim_x && move_y >= lim_y && move_x == x + i && move_y == y - j || lim_x == 8 && lim_y == 8 && move_x == x + i && move_y == y - j)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+         }
+         int j = 20;
+         if (move_x == x && move_y > y)
+         {
+             for (int i = y + 1; i <= move_y; i++)
+             {
+                 if (m_matrix[x][i] != " _______ ")
+                 {
+                     j = i;
+                     break;
+                 }
+             }
+             for (int i = y; i <= j; ++i)
+             {
+                 if (move_y <= j && move_y == y + i)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+         }
+         else if (move_x == x && move_y < y)
+         {
+             for (int i = y + 1; i <= move_y; i--)
+             {
+                 if (m_matrix[x][i] != " _______ ")
+                 {
+                     j = i;
+                     break;
+                 }
+             }
+             for (int i = y; i <= j; ++i)
+             {
+                 if (move_y <= j && move_y == y - i)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+         }
+         else if (move_x > x && move_y == y)
+         {
+             for (int i = x + 1; i <= move_x; i++)
+             {
+                 if (m_matrix[i][y] != " _______ ")
+                 {
+                     j = i;
+                     break;
+                 }
+             }
+             for (int i = x; i <= j; ++i)
+             {
+                 if (move_x <= j && move_x == x + i)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+         }
+         else if (move_x < x && move_y == y)
+         {
+             for (int i = x + 1; i <= move_x; i--)
+             {
+                 if (m_matrix[i][y] != " _______ ")
+                 {
+                     j = i;
+                     break;
+                 }
+             }
+             for (int i = x; i <= j; ++i)
+             {
+                 if (move_x <= j && move_x == x - i)
+                 {
+                     swap(&m_matrix[move_x][move_y], &m_matrix[x][y]);
+                     x = -1;
+                     y = -1;
+                     move_x = -1;
+                     move_y = -1;
+                     break;
+                 }
+             }
+         }
+         else {
+             cout << "Your queen want to do wrong move\n";
+         }
+     }
+#pragma endregion white queen
+#pragma endregion white figures
+     else
         {
             cerr << "Dont Correct move\n";
             throw abort;

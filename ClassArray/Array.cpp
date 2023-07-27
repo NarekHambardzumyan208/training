@@ -5,11 +5,11 @@ template<typename Type>
 class Array
 {
 private:
-    Type* m_ptr;
-    size_t m_size;
+    Type* m_ptr = nullptr;
+    size_t m_size=0;
 public:
     Array() {
-        std::cout << "Input the m_size of array\n";
+        std::cout << "Input the size of array\n";
         getsize();
         m_ptr = new Type[m_size];
         std::cout << "The array was created\n";
@@ -18,7 +18,6 @@ public:
     {
         while (m_size <= 0)
         {
-            cout << "Input the size of matrix\n";
             cin >> m_size;
         }
     }
@@ -84,6 +83,34 @@ public:
         }
         return m_ptr[m_size];
     }
+    void push_back(int num)
+    {
+        Type* x = m_ptr;
+        m_ptr = nullptr;
+        ++m_size;
+        m_ptr = new Type[m_size];
+        for (int i = 0; i < m_size; i++)
+        {
+            if (i == m_size - 1)
+            {
+                m_ptr[i] = num;
+                break;
+            }
+            m_ptr[i] = x[i];
+        }
+        delete[] x;
+        x = nullptr;
+    }
+    void pop_back() {
+        Type* x = m_ptr;
+        m_ptr = nullptr;
+        --m_size;
+        m_ptr = new Type[m_size];
+        for (int i = 0; i < m_size; i++)
+        {
+            m_ptr[i] = x[i];
+        }
+    }
     ~Array()
     {
         std::cout << "The destructor was called\n";
@@ -94,7 +121,7 @@ public:
 };
 int main()
 {
-    Array<int> first;
+  /*  Array<int> first;
     first.gen_elements();
     first.display();
     Array<int> second(std::move(Array<int>()));
@@ -102,5 +129,12 @@ int main()
     third = std::move(Array<int>());
     Array<float> Fourth;
     std::cout << first.at(5);
-    std::cout << std::endl;
+    std::cout << std::endl;*/
+    Array<int> first;
+    first.gen_elements();
+    first.push_back(1);
+    first.push_back(3);
+    first.display();
+    first.pop_back();
+    first.display();
 }
