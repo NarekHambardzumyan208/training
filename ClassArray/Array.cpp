@@ -108,6 +108,7 @@ public:
         {
             m_ptr[i] = x[i];
         }
+        delete[] x;
     }
     ~Array()
     {
