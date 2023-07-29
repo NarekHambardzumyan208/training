@@ -108,6 +108,7 @@ public:
         {
             m_ptr[i] = x[i];
         }
+        delete[] x;
     }
     ~Array()
     {
@@ -127,7 +128,6 @@ int main()
     third = std::move(Array<int>());
     Array<float> Fourth;
     std::cout << first.at(5);
-<<<<<<< HEAD
     std::cout << std::endl;*/
     Array<int> first;
     first.gen_elements();
@@ -137,7 +137,4 @@ int main()
     first.pop_back();
     first.display();
 }
-=======
-    std::cout << std::endl;
-}
->>>>>>> 3268e7d0c0c4bd7b58a2936b6071ed53dcce5a83
+
