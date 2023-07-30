@@ -12,8 +12,8 @@ protected:
 	void getcoords();
 	bool check_coords();//if there was figure return 1 else 0
 public:
-	void isCheck();
-	void isCheckmate();
+	bool isCheck( bool isWhiteTurn);
+	bool isCheckmate(bool isWhiteTurn);
 	void def_init();//default chess board
 	void display();
 	void Select_Figure();
