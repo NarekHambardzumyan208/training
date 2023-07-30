@@ -364,7 +364,7 @@ using namespace std;
 			cout << "\nThe Black Move\n";
 			display();
 			Black_Move();
-			a = isCheckmate(1);
+			a = isCheckmate(0);
 			system("cls");
 		}
 		if (a) {
