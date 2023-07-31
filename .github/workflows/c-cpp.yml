@@ -13,8 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: configure
-      run: ./configure
+    - name: Chess_Board.cpp
+      run: ./Chess_Board.cpp
     - name: make
       run: make
     - name: make check
