@@ -1,8 +1,8 @@
 #include "Chess_Board.h"
 #include "Figures.cpp"
 #include <iostream>
+bool win = 0;
 using namespace std;
-#pragma region variables
    const int m_rows = 8, m_columns = 8;
 	std::string W_Chessmate_types[6]{ " W.Rook "," W.Knight "," W.Bishop "," W.Queen "," W.King ","  W.Pawn " };
 	bool Chess_Board::check_coords() {
@@ -19,8 +19,7 @@ using namespace std;
 			return true;
 		}
 	}
-#pragma endregion
-#pragma region set_Functions
+
 	void Chess_Board::getmove() {
 		cout << "Where you want to move that figure\n";
 		cin >> move_x;
@@ -46,8 +45,6 @@ using namespace std;
 			cin >> y;
 		}
 	};
-	#pragma endregion
-#pragma region Check
 	bool Chess_Board::isCheck(bool isWhiteTurn)
 	{
 		int king_x, king_y;
@@ -167,49 +164,98 @@ using namespace std;
 
 		return false;
 	}
-#pragma endregion Check
-#pragma region CheckMate
-	bool Chess_Board::isCheckmate(bool isWhiteTurn)
+	bool Chess_Board::isCheckAfterMove(int from_x, int from_y, int to_x, int to_y, bool isWhiteTurn)
 	{
-		if (!Chess_Board::isCheck(isWhiteTurn))
+		string temp = m_matrix[to_x][to_y];
+
+		m_matrix[to_x][to_y] = m_matrix[from_x][from_y];
+		m_matrix[from_x][from_y] = " _______ ";
+
+		bool isCheckAfterMove = isCheck(isWhiteTurn);
+
+		m_matrix[from_x][from_y] = m_matrix[to_x][to_y];
+		m_matrix[to_x][to_y] = temp;
+
+		return isCheckAfterMove;
+	}
+	bool Chess_Board::isMate(bool isWhiteTurn)
+	{
+		if (!isCheck(isWhiteTurn))
 		{
-			return false; 
+			return false;
+		}
+
+		int king_x, king_y;
+		string king;
+
+		if (isWhiteTurn)
+		{
+			king = " W.King ";
+		}
+		else
+		{
+			king = " B.King ";
 		}
 
 		for (int i = 0; i < m_rows; i++)
 		{
 			for (int j = 0; j < m_columns; j++)
 			{
-				if ((isWhiteTurn && m_matrix[i][j][2] == 'W') || (!isWhiteTurn && m_matrix[i][j][2] == 'B'))
+				if (m_matrix[i][j] == king)
 				{
-					for (int x = 0; x < m_rows; x++)
+					king_x = i;
+					king_y = j;
+					break;
+				}
+			}
+		}
+
+		int dx[] = { -1, 1, 1, -1, 0, 0, 1, -1 };
+		int dy[] = { -1, -1, 1, 1, 1, -1, 0, 0 };
+
+		for (int k = 0; k < 8; k++)
+		{
+			int x = king_x + dx[k];
+			int y = king_y + dy[k];
+
+			if (x >= 0 && x < m_rows && y >= 0 && y < m_columns)
+			{
+				if (m_matrix[x][y] == " _______ " && !isCheckAfterMove(king_x, king_y, x, y, isWhiteTurn))
+				{
+					return false;
+				}
+			}
+		}
+		string enemyRook = (isWhiteTurn) ? " B.Rook " : " W.Rook ";
+		string enemyBishop = (isWhiteTurn) ? " B.Bishop " : " W.Bishop ";
+		string enemyQueen = (isWhiteTurn) ? " B.Queen " : " W.Queen ";
+		string enemyKnight = (isWhiteTurn) ? " B.Knight " : " W.Knight ";
+		string enemyPawn = (isWhiteTurn) ? " B.Pawn " : " W.Pawn ";
+
+		int dxAttack[] = { 0, 0, 1, -1, 1, -1, 1, -1 };
+		int dyAttack[] = { 1, -1, 0, 0, 1, -1, -1, 1 };
+
+		for (int k = 0; k < 8; k++)
+		{
+			int x = king_x + dxAttack[k];
+			int y = king_y + dyAttack[k];
+
+			if (x >= 0 && x < m_rows && y >= 0 && y < m_columns)
+			{
+				string piece = m_matrix[x][y];
+				if (piece != " _______ " && (piece == enemyRook || piece == enemyBishop || piece == enemyQueen || piece == enemyKnight || piece == enemyPawn))
+				{
+					if (!isCheckAfterMove(king_x, king_y, x, y, isWhiteTurn))
 					{
-						for (int y = 0; y < m_columns; y++)
-						{
-								string originalPiece = m_matrix[x][y];
-								m_matrix[x][y] = m_matrix[i][j];
-								m_matrix[i][j] = " _______ ";
-
-								bool isStillCheck = isCheck(isWhiteTurn);
-
-								m_matrix[i][j] = m_matrix[x][y];
-								m_matrix[x][y] = originalPiece;
-
-								if (!isStillCheck)
-								{
-									return false; 
-								}
-						}
+						return false;
 					}
 				}
 			}
 		}
-		break;
-		return true; 
+
+		return true;
 	}
 
-#pragma endregion
-#pragma region Default initilizaion
 	void Chess_Board::def_init() {
 		for (int i = 0; i < m_rows; i++)
 		{
@@ -248,8 +294,6 @@ using namespace std;
 				cout << "]\n";
 			}
 	};
-#pragma endregion display
-#pragma region White Select and Move Figure
 	void Chess_Board::Select_Figure() {
 		getcoords();
 		if (check_coords() == 0 || x >= m_rows || y >= m_columns) {
@@ -273,32 +317,35 @@ using namespace std;
 			Move_Figure();
 		}
 		if (m_matrix[x][y] == " W.Rook ") {
-			Rook::Move_Rook(x, y, move_x, move_y, m_matrix);
+		    Figure::Move_Rook(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " W.Knight ") {
-			Knight::Move_Knight(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Knight(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " W.Bishop ") {
-			Bishop::Move_Bishop(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Bishop(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " W.Queen ") {
-			Queen::Move_Queen(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Queen(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " W.King ") {
-			King::Move_King(x, y, move_x, move_y, m_matrix);
+			Figure::Move_King(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == "  W.Pawn ") {
-			Pawn::Move_Pawn(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Pawn(x, y, move_x, move_y, m_matrix);
 		}
 		else {
 			cerr << "Something went wrong. Invalid figure selected.\n";
 			throw abort;
 		}
+		if (win)
+		{
+			cout << "Happy win\n";
+			return;
+		}
 		cout << "If the move is skipped, it means you made an illegal move (Cheater).\n";
 	}
-#pragma endregion
 
-#pragma region Black Select and Move
 	void Chess_Board::Black_Select() {
 		getcoords();
 		if (check_coords() == 0 || x >= m_rows || y >= m_columns) {
@@ -322,33 +369,37 @@ using namespace std;
 			Black_Move();
 		}
 		if (m_matrix[x][y] == " B.Rook ") {
-			Rook::Move_Rook(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Rook(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " B.Knight ") {
-			Knight::Move_Knight(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Knight(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " B.Bishop ") {
-			Bishop::Move_Bishop(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Bishop(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " B.Queen ") {
-			Queen::Move_Queen(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Queen(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == " B.King ") {
-			King::Move_King(x, y, move_x, move_y, m_matrix);
+			Figure::Move_King(x, y, move_x, move_y, m_matrix);
 		}
 		else if (m_matrix[x][y] == "  B.Pawn ") {
-			Pawn::Move_Pawn(x, y, move_x, move_y, m_matrix);
+			Figure::Move_Pawn(x, y, move_x, move_y, m_matrix);
 		}
 		else {
 			cerr << "Something went wrong. Invalid figure selected.\n";
 			throw abort;
 		}
+		if (win)
+		{
+			cout << "Happy win\n";
+			return;
+		}
 		cout << "If the move is skipped, it means you made an illegal move (Cheater).\n";
+		
 	}
-#pragma endregion
 	    void Chess_Board::Start() {
 		def_init();
-	    bool a;
 		cout << "Hello To Chess Game Play as you want to play\n";
 		cout << "Instructions:For first you must to input the\n";
 		cout << "coordinats of chessman that you want to play\n";
@@ -359,18 +410,32 @@ using namespace std;
 			cout << "\n The White Move\n";
 			display();
 			Move_Figure();
-			a = isCheckmate(1);
+			win = isMate(0);
+			if (win)
+			{
+				break;
+			}
 			system("cls");
 			cout << "\nThe Black Move\n";
 			display();
 			Black_Move();
-			a = isCheckmate(0);
+			win = isMate(1);
+			if (win)
+			{
+				break;
+			}
 			system("cls");
 		}
-		if (a) {
-			cout << "You Win\nGOOD PLAYER\n";
+		if (win) {
+			cout << "You Win\n";
+			cout <<  "      dBBBP  dBP dBP dBBBP.dBBBBP.dBBBBP      dBBBBBBb dBBBBBb  .dBBBBP dBBBBBBP dBBBP  dBBBBBb   \n";
+			cout << "                         BP     BP            '   dB'      BB  BP               dBBP    dBP  dBP\n";
+			cout << "    dBP    dBBBBBP dBBP   `BBBBb `BBBBb      dB'dB'dB'   dBP BB   `BBBBb   dBP  dBBPDPP dBBBBK \n";
+			cout <<  "  dBP    dBP dBP dBP        dBP    dBP    dB'dB'dB'   dBP  BB      dBP  dBP   dBP     dBP  BB\n";
+			cout <<  " dBBBBP dBP dBP dBBBBP dBBBBP'dBBBBP'    dB'dB'dB'   dBBBBBBB dBBBBP'  dBP   dBBBBP  dBP  dB'\n";
+				  
 		}
-	}
+	    }
 		int main() 
 		{
 		Chess_Board* Game = new Chess_Board;

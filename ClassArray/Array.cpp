@@ -9,7 +9,7 @@ private:
     size_t m_size=0;
 public:
     Array() {
-        std::cout << "Input the size of array\n";
+        std::cout << "Input the size of vector\n";
         getsize();
         m_ptr = new Type[m_size];
         std::cout << "The array was created\n";
@@ -109,6 +109,7 @@ public:
             m_ptr[i] = x[i];
         }
         delete[] x;
+        x = nullptr
     }
     ~Array()
     {

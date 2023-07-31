@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Figures.h"
 using namespace std;
-#pragma region Funcs
 bool check_coords(int x, int y,string** m_matrix) {
     if (x < 0 || y < 0)
     {
@@ -22,9 +21,7 @@ void swap(string* a, string* b) {
     *a = *b;
     *b = " _______ ";
 }
-#pragma endregion
-#pragma region Rook
-void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
+    void Figure::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
     {
            if (m_matrix[x][y] == " W.Rook " || m_matrix[x][y] == " B.Rook ")
            {
@@ -128,9 +125,7 @@ void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
                }
         }
     };
-#pragma endregion
-#pragma region Queen
-    void Queen::Move_Queen(int x, int y, int move_x, int move_y, string** m_matrix)
+    void Figure::Move_Queen(int x, int y, int move_x, int move_y, string** m_matrix)
     {
         if (m_matrix[x][y] == " W.Queen " || m_matrix[x][y] == " B.Queen ")
         {
@@ -343,9 +338,7 @@ void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
             }
         }
     }
-#pragma endregion
-#pragma region Bishop
-    void Bishop::Move_Bishop(int x, int y, int move_x, int move_y, string** m_matrix)
+    void Figure::Move_Bishop(int x, int y, int move_x, int move_y, string** m_matrix)
     {
         if (m_matrix[x][y] == " W.Bishop " || m_matrix[x][y] == " B.Bishop ")
         {
@@ -423,10 +416,8 @@ void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
             throw std::runtime_error("Your bishop wants to do an illegal move");
         }
     }
-#pragma endregion
 
-#pragma region Pawn
-    void Pawn::Move_Pawn(int x, int y, int move_x, int move_y, string** m_matrix) {
+    void Figure::Move_Pawn(int x, int y, int move_x, int move_y, string** m_matrix) {
         if (m_matrix[x][y] == "  W.Pawn " && ((x + 1 != 8 && y + 1 != 8 && check_coords(1 + x, 1 + y, m_matrix) && move_x == 1 + x && move_y == 1 + y) ||
             (x == 1 && move_x == x + 2 && move_y == y) ||
             (move_y == y && x + 1 != 8 && move_x == x + 1) ||
@@ -454,10 +445,8 @@ void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
             throw std::runtime_error("Invalid move for the pawn!");
         }
     };
-#pragma endregion
 
-#pragma region Knight
-    void Knight::Move_Knight(int x, int y, int move_x, int move_y, string** m_matrix) {
+    void Figure::Move_Knight(int x, int y, int move_x, int move_y, string** m_matrix) {
         if (((m_matrix[x][y] == " W.Knight " || m_matrix[x][y] == " B.Knight ") &&
             ((move_x == x + 1 && move_y == y + 2) ||
                 (move_y == y + 1 && move_x == x + 2) ||
@@ -479,9 +468,7 @@ void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
             cerr << "Your Knight wants to do an illegal move." << endl;
         }
     };
-#pragma endregion
-#pragma region King
-    void King::Move_King(int x, int y, int move_x, int move_y, string** m_matrix) {
+    void Figure::Move_King(int x, int y, int move_x, int move_y, string** m_matrix) {
         if (((m_matrix[x][y] == " W.King " || m_matrix[x][y] == " B.King ") &&
             ((x != 7 && move_x == x + 1) ||
                 (x != 0 && move_x == x - 1) ||
@@ -503,4 +490,3 @@ void Rook::Move_Rook(int x, int y, int move_x, int move_y, string** m_matrix)
             cerr << "Your King wants to do an illegal move." << endl;
         }
     };
-#pragma endregion
