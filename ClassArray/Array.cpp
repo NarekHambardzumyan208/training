@@ -109,7 +109,7 @@ public:
             m_ptr[i] = x[i];
         }
         delete[] x;
-        x = nullptr
+        x = nullptr;
     }
     ~Array()
     {
