@@ -1,7 +1,8 @@
 ﻿#include <iostream>
 #include <unordered_set>
-#include <C:\Users\User\source\repos\container\.vector\vector.h>
-void move_elems(vector<int> a, std::unordered_set<int>& b)
+#include <C:\Users\User\source\repos\container\.vector\vector.cpp>
+template<typename type>
+void move_elems(vector<type> a, std::unordered_set<type>& b)
 {
 	b.clear();
 	for (int i = 0; i < a.size(); i++)
