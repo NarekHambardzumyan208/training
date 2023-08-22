@@ -19,5 +19,5 @@ jobs:
 
     - name: Compile and Run
       run: |
-        g++ -o my_program training/inputfile/main.cpp
+        g++ -o my_program ./training/inputfile/main.cpp
         ./my_program.exe
