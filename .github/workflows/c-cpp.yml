@@ -1,23 +1,23 @@
-name: C/C++ CI
+name: Compile and Run C++
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
-
+    name: Build and Run
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Chess_Board.cpp
-      run: ./Chess/Chess_Board.cpp
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up g++
+      run: sudo apt-get install g++
+
+    - name: Compile and Run
+      run: |
+        g++ -o my_program training/inputfile/main.cpp
+        ./my_program.exe
