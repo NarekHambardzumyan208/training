@@ -36,7 +36,7 @@ public:
 		{
 if (ptr != nullptr)
 {
-if(Control_Block->decrement_count == 0)
+if(Control_Block->decrement_data== 0)
 {
 		delete Control_Block;
 		delete ptr;
@@ -58,9 +58,10 @@ if(Control_Block->decrement_count == 0)
 	shared_ptr& operator=(const shared_ptr<T>& obj)
 	{
 		if (this != &obj)
-		{
+		if(ptr != nullptr && Control_Block->decrement_data == 0){
 			delete Control_Block;
 			delete ptr;
+}
 			Control_Block = ptr.Control_Block;
 			Control_Block->increment_data();
 			this->ptr = ptr.ptr;
