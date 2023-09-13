@@ -59,15 +59,18 @@ if(Control_Block->decrement_count == 0)
 	{
 		if (this != &obj)
 		{
+    if(ptr != nullptr&& Control_Block->decrement_count == 0)
+{
 			delete Control_Block;
 			delete ptr;
+}
 			Control_Block = ptr.Control_Block;
 			Control_Block->increment_data();
-			this->ptr = ptr.ptr;
+			this->ptr = obj.ptr;
 		}
 	}
 	~shared_ptr() { 
-		if (0 == Control_Block->decrement_data())
+		if (0 == Control_Block->decrement_count())
 		{
 			delete Control_Block;
 			Deleter(ptr);
