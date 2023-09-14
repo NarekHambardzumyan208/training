@@ -24,7 +24,7 @@ public:
 			Control_Block->set_data(1);
 	    }
 	};
-	shared_ptr(shared_ptr<T>&& rvalue)
+	shared_ptr(shared_ptr<T>&& rvalue) noexcept
 	{
 		Control_Block = rvalue.Control_Block;
 		ptr = rvalue.ptr;
@@ -34,8 +34,14 @@ public:
 	shared_ptr operator=(shared_ptr<T>&& rvalue) { 
 		if (this != &rvalue) 
 		{
+if (ptr != nullptr)
+{
+if(Control_Block->decrement_count == 0)
+{
 		delete Control_Block;
 		delete ptr;
+}
+}
 		Control_Block = rvalue.Control_Block;
 		ptr = rvalue.ptr;
 		rvalue.ptr = nullptr;
@@ -53,15 +59,18 @@ public:
 	{
 		if (this != &obj)
 		{
+    if(ptr != nullptr&& Control_Block->decrement_count == 0)
+{
 			delete Control_Block;
 			delete ptr;
+}
 			Control_Block = ptr.Control_Block;
 			Control_Block->increment_data();
-			this->ptr = ptr.ptr;
+			this->ptr = obj.ptr;
 		}
 	}
 	~shared_ptr() { 
-		if (0 == Control_Block->decrement_data())
+		if (0 == Control_Block->decrement_count())
 		{
 			delete Control_Block;
 			Deleter(ptr);
