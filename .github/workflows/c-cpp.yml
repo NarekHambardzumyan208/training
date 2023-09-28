@@ -16,7 +16,7 @@ jobs:
     - name: Compile C++ Code
       id: compile
       run: |
-        g++ -o myprogram main.cpp
+        g++ -o myprogram Games/Chess/Chess_Board.cpp
         echo "::set-output name=exePath::$(pwd)/myprogram"
       shell: bash
 
