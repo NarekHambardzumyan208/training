@@ -21,11 +21,11 @@ jobs:
       shell: bash
 
     - name: Debug
-    run: |
-    Get-ChildItem -Force 
-    echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
-    if (Test-Path ${{ steps.compile.outputs.exePath }}) {
-      Start-Process ${{ steps.compile.outputs.exePath }}
-    } else {
-      Write-Host "Executable not found at path: ${{ steps.compile.outputs.exePath }}"
-    }
+      run: |
+        powershell -File list_files.ps1  # Run the PowerShell script to list files
+        echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
+        if (Test-Path ${{ steps.compile.outputs.exePath }}) {
+          Start-Process ${{ steps.compile.outputs.exePath }}
+        } else {
+          Write-Host "Executable not found at path: ${{ steps.compile.outputs.exePath }}"
+        }
