@@ -258,5 +258,6 @@ int main()
 	Chess_Board* First = new Chess_Board;
 	First->start();
 	delete First;
+	getchar();
 }
 
