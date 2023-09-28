@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Use the windows-latest runner
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
@@ -20,13 +20,12 @@ jobs:
         echo "::set-output name=exePath::$(pwd)/myprogram.exe"
       shell: bash
 
-    - name: Use Compiled Executable
+    - name: Debug
       run: |
-        $exePath="${{ steps.compile.outputs.exePath }}"
-        echo "Executable Path: $exePath"
-        if (Test-Path $exePath) {
-          Start-Process $exePath
+        ls -la  # List files in the current directory for debugging
+        echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
+        if (Test-Path ${{ steps.compile.outputs.exePath }}) {
+          Start-Process ${{ steps.compile.outputs.exePath }}
         } else {
-          Write-Host "Executable not found at path: $exePath"
+          Write-Host "Executable not found at path: ${{ steps.compile.outputs.exePath }}"
         }
-
