@@ -21,10 +21,10 @@ jobs:
       shell: bash
     - name: Debug
       run: |
-        echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
-        if exist "${{ steps.compile.outputs.exePath }}" (
-         cmd /c "${{ steps.compile.outputs.exePath }}"
-         ) else (
-          echo "Executable not found at path: ${{ steps.compile.outputs.exePath }}"
-          )
+         echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
+          if (Test-Path "${{ steps.compile.outputs.exePath }}") {
+           Start-Process "${{ steps.compile.outputs.exePath }}"
+           } else {
+             echo "Executable not found at path: ${{ steps.compile.outputs.exePath }}"
+           }
 
