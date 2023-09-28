@@ -16,7 +16,7 @@ jobs:
     - name: Compile and Run C++ Code
       run: |
         g++ -o prog.exe Games/Chess_analyzer/chessgame.cpp
-        ./prog.exe  
-        shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
-
+    - name: Run Exe
+      run: |
+       ./prog.exe
 
