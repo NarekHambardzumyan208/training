@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Choose an appropriate runner
+    runs-on: windows-latest  # Choose an appropriate runner
 
     steps:
     - name: Checkout code
@@ -31,7 +31,7 @@ jobs:
         exePath="${{ steps.compile.outputs.exePath }}"
         echo "Executable Path: $exePath"
         if [[ -f "$exePath" ]]; then
-          .$exePath
+          ./$exePath
         else
           echo "Executable not found at path: $exePath"
         fi
