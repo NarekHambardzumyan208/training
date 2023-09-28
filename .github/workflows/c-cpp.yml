@@ -17,15 +17,5 @@ jobs:
       id: compile
       run: |
         g++ -o myprogram.exe Games/Chess/Chess_Board.cpp
-        echo "::set-output name=exePath::$(pwd)/myprogram.exe"
-      shell: bash
-    - name: Debug
-      run: |
-         echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
-          if (Test-Path "${{ steps.compile.outputs.exePath }}") {
-           Start-Process "${{ steps.compile.outputs.exePath }}"
-           } else {
-             echo "Executable not found at path: ${{ steps.compile.outputs.exePath }}"
-           }
-    - name: LS
-      run: ls
+        ./myprogram.exe
+
