@@ -1,9 +1,9 @@
-name: Build C++ Application
+name: Build and Run C++ Application
 
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - main
 
 jobs:
   build:
@@ -13,9 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Compile C++ Code
-      id: compile
+    - name: Compile and Run C++ Code
       run: |
         g++ -o prog.exe Games/Chess_analyzer/chessgame.cpp
         ./prog.exe
-
