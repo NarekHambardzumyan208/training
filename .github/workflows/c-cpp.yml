@@ -22,10 +22,11 @@ jobs:
 
     - name: Use Compiled Executable
       run: |
-        exePath="${{ steps.compile.outputs.exePath }}"
+        $exePath="${{ steps.compile.outputs.exePath }}"
         echo "Executable Path: $exePath"
-        if [[ -f "$exePath" ]]; then
-          "$exePath"
-        else
-          echo "Executable not found at path: $exePath"
-        fi
+        if (Test-Path $exePath) {
+          Start-Process $exePath
+        } else {
+          Write-Host "Executable not found at path: $exePath"
+        }
+
