@@ -1,23 +1,32 @@
-name: Compile and Run C++
+name: Build C++ Application
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust the branch as needed
 
 jobs:
   build:
-    name: Build and Run
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Use the windows-latest runner
 
     steps:
-    - name: Check out code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up g++
-      run: sudo apt-get install g++
-
-    - name: Compile and Run
+    - name: Compile C++ Code
+      id: compile
       run: |
-        g++ -o my_program C:\Users\User\OneDrive\Рабочий стол\C++\training\Games\Chess\Chess_Board.cpp
-        ./my_program.exe
+        g++ -o myprogram.exe Games/Chess/Chess_Board.cpp
+        echo "::set-output name=exePath::$(pwd)/myprogram.exe"
+      shell: bash
+
+    - name: Use Compiled Executable
+      run: |
+        $exePath="${{ steps.compile.outputs.exePath }}"
+        echo "Executable Path: $exePath"
+        if (Test-Path $exePath) {
+          Start-Process $exePath
+        } else {
+          Write-Host "Executable not found at path: $exePath"
+        }
+
