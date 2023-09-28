@@ -31,7 +31,7 @@ jobs:
         exePath="${{ steps.compile.outputs.exePath }}"
         echo "Executable Path: $exePath"
         if [[ -f "$exePath" ]]; then
-          ./$exePath
+          .$exePath
         else
           echo "Executable not found at path: $exePath"
         fi
