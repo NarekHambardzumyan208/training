@@ -334,16 +334,10 @@ void Chess_Board::Move_Figure() {
 	else if (m_matrix[x][y] == "  W.Pawn ") {
 		Figure::Move_Pawn(x, y, move_x, move_y, m_matrix);
 	}
-	else {
-		cerr << "Something went wrong. Invalid figure selected.\n";
-		throw abort;
-	}
-	if (win)
+	else if (!win)
 	{
-		cout << "Happy win\n";
-		return;
+		cout << "If the move is skipped, it means you made an illegal move (Cheater).\n";
 	}
-	cout << "If the move is skipped, it means you made an illegal move (Cheater).\n";
 }
 
 void Chess_Board::Black_Select() {
@@ -386,17 +380,10 @@ void Chess_Board::Black_Move() {
 	else if (m_matrix[x][y] == "  B.Pawn ") {
 		Figure::Move_Pawn(x, y, move_x, move_y, m_matrix);
 	}
-	else {
-		cerr << "Something went wrong. Invalid figure selected.\n";
-		throw abort;
-	}
-	if (win)
+	else if (!win)
 	{
-		cout << "Happy win\n";
-		return;
+		cout << "If the move is skipped, it means you made an illegal move (Cheater).\n";
 	}
-	cout << "If the move is skipped, it means you made an illegal move (Cheater).\n";
-
 }
 void Chess_Board::Start() {
 	def_init();

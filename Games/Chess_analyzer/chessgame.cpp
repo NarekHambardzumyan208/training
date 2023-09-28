@@ -5,7 +5,6 @@
 #include <vector>
 const int m_rows = 8;
 const int m_columns = 8;
-std::ifstream InputFile("input.txt");
 enum class color {
 	white,
 	black,
@@ -52,11 +51,11 @@ public:
 class Chess_Board {
 	std::string** Board = new std::string * [8];
 	std::vector<std::string> Coordinates{ "WK77","BK56","BQ75","BB67","BN55" };
-	King* White_King = new King("W.King",color::white, AsciiToCoords(Coordinates[0][2]), AsciiToCoords (Coordinates[0][3]));
-	King* Black_King = new King("B.King", color::black, AsciiToCoords (Coordinates[1][2]), AsciiToCoords (Coordinates[1][3]));
-	Queen* Black_Queen = new Queen("B.Queen", color::black, AsciiToCoords (Coordinates[2][2]), AsciiToCoords (Coordinates[2][3]));
-	Bishop* Black_Bishop = new Bishop("B.Bishop", color::black, AsciiToCoords (Coordinates[3][2]), AsciiToCoords (Coordinates[3][3]));
-	Knight* Black_Knight = new Knight("B.Knight", color::black, AsciiToCoords (Coordinates[4][2]), AsciiToCoords (Coordinates[4][3]));
+	King* White_King = new King(" W.King ",color::white, AsciiToCoords(Coordinates[0][2]), AsciiToCoords (Coordinates[0][3]));
+	King* Black_King = new King(" B.King ", color::black, AsciiToCoords (Coordinates[1][2]), AsciiToCoords (Coordinates[1][3]));
+	Queen* Black_Queen = new Queen(" B.Queen ", color::black, AsciiToCoords (Coordinates[2][2]), AsciiToCoords (Coordinates[2][3]));
+	Bishop* Black_Bishop = new Bishop(" B.Bishop ", color::black, AsciiToCoords (Coordinates[3][2]), AsciiToCoords (Coordinates[3][3]));
+	Knight* Black_Knight = new Knight(" B.Knight ", color::black, AsciiToCoords (Coordinates[4][2]), AsciiToCoords (Coordinates[4][3]));
 public:
 	int AsciiToCoords(int a)
 	{
@@ -117,7 +116,7 @@ public:
 			Board[i] = new std::string[8];
 			for (int j = 0; j < 8; j++)
 			{
-				Board[i][j] = "______";
+				Board[i][j] = " _______ ";
 			}
 		}
 		Check_Coords();
@@ -145,81 +144,94 @@ public:
 			std::cout << "]" << std::endl;
 		}
 	}
-	bool isCheck(int x,int y)
-	{
+	bool isCheck(int x, int y) {
 		int dxKnight[] = { -2, -2, -1, -1, 1, 1, 2, 2 };
 		int dyKnight[] = { -1, 1, -2, 2, -2, 2, -1, 1 };
 
-		for (int k = 0; k < 8; k++)
-		{
+		for (int k = 0; k < 8; k++) {
 			int dx = x + dxKnight[k];
 			int dy = y + dyKnight[k];
 
-			if (dx >= 0 && dx < m_rows && dy >= 0 && dy < m_columns)
-			{
+			if (dx >= 0 && dx < m_rows && dy >= 0 && dy < m_columns) {
 				std::string piece = Board[dx][dy];
-				if (piece == Black_Knight->name)
-				{
+				if (piece == Black_Knight->name) {
 					return true;
 				}
 			}
 		}
+
+		int dxRook[] = { 0, 0, 1, -1 };
+		int dyRook[] = { 1, -1, 0, 0 };
+
+		for (int k = 0; k < 4; k++) {
+			int dx = x + dxRook[k];
+			int dy = y + dyRook[k];
+
+			while (dx >= 0 && dx < m_rows && dy >= 0 && dy < m_columns) {
+				std::string piece = Board[dx][dy];
+				if (piece != " _______ " && (piece == Black_Queen->name)) {
+					return true;
+				}
+				if (piece != " _______ ") {
+					break;
+				}
+				dx += dxRook[k];
+				dy += dyRook[k];
+			}
+		}
+
 		int dxBishop[] = { -1, 1, 1, -1 };
 		int dyBishop[] = { -1, -1, 1, 1 };
 
-		for (int k = 0; k < 4; k++)
-		{
+		for (int k = 0; k < 4; k++) {
 			int dx = x + dxBishop[k];
 			int dy = y + dyBishop[k];
 
-			while (x >= 0 && x < m_rows && y >= 0 && y < m_columns)
-			{
+			while (dx >= 0 && dx < m_rows && dy >= 0 && dy < m_columns) {
 				std::string piece = Board[dx][dy];
-				if (piece != " _______ " && (piece == Black_Bishop->name || piece == Black_Queen->name))
-				{
+				if (piece != " _______ " && (piece == Black_Bishop->name || piece == Black_Queen->name)) {
 					return true;
 				}
-				if (piece != " _______ ")
-				{
+				if (piece != " _______ ") {
 					break;
 				}
-				x += dxBishop[k];
-				y += dyBishop[k];
+				dx += dxBishop[k];
+				dy += dyBishop[k];
 			}
 		}
-		int dxKing[] = { 1,-1,-1,1,1,-1,0,0 };
-		int dyKing[] = { 1,-1,1,-1,0,0,1,-1 };
-		for (int i = 0; i < m_rows; i++)
-		{
-			int dx = x + dxKing[i];
-			int dy = y + dyKing[i];
-			if (dx >= 8 && dy >= 8 && dx < 0 && dy < 0)
-			{
-				if (Board[dx][dy] != "______" && Board[dx][dy] == Black_King->name)
-				{
-					return 1;
+
+		return false;
+	}
+
+	bool IsCheckMate() {
+		int whiteKingX = White_King->x;
+		int whiteKingY = White_King->y;
+		if (!isCheck(whiteKingX, whiteKingY)) {
+			return false;
+		}
+		int dxKing[] = { 1, -1, -1, 1, 1, -1, 0, 0 };
+		int dyKing[] = { 1, -1, 1, -1, 0, 0, 1, -1 };
+		for (int i = 0; i < 8; i++) {
+			int newX = whiteKingX + dxKing[i];
+			int newY = whiteKingY + dyKing[i];
+			if (newX >= 0 && newX < m_rows && newY >= 0 && newY < m_columns) {
+				if (!isCheck(newX, newY) && isValidMove(whiteKingX, whiteKingY, newX, newY)) {
+					return false;  
 				}
 			}
 		}
-		return 0;
+		return true;
 	}
-	bool IsCheckMate()
-	{
-		if (!isCheck(White_King->x, White_King->y))
-		{
-			return 0;
+
+	bool isValidMove(int currentX, int currentY, int newX, int newY) {
+		int dx = abs(newX - currentX);
+		int dy = abs(newY - currentY);
+		if (dx <= 1 && dy <= 1) {
+			return true;
 		}
-		int dxKing[] = { 1,-1,-1,1,1,-1,0,0 };
-		int dyKing[] = { 1,-1,1,-1,0,0,1,-1 };
-		for (int i = 0; i < 8; i++)
-		{
-			if (!isCheck(White_King->x + dxKing[i], White_King->y + dyKing[i]))
-			{
-				return 0;
-			}
-		}
-		return 1;
+		return false;
 	}
+
 	void start()
 	{
 		display();
@@ -231,9 +243,9 @@ public:
 	~Chess_Board() {
 		for (int i = 0; i < 8; i++)
 		{
-			delete Board[i];
+			delete[] Board[i];
 		}
-		delete Board;
+		delete[] Board;
 		delete White_King;
 		delete Black_King;
 		delete Black_Bishop;

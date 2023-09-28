@@ -19,5 +19,5 @@ jobs:
 
     - name: Compile and Run
       run: |
-        g++ -o my_program ./training/inputfile/main.cpp
+        g++ -o my_program C:\Users\User\OneDrive\Рабочий стол\C++\training\Games\Chess\Chess_Board.cpp
         ./my_program.exe
