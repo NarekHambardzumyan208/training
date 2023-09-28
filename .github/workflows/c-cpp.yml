@@ -1,32 +1,20 @@
-name: Build C++ Application
+name: Build and Run C++ Application
 
 on:
   push:
     branches:
-      - main  # Adjust the branch as needed
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest  # Use the windows-latest runner
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Compile C++ Code
-      id: compile
+    - name: Compile and Run C++ Code
       run: |
-        g++ -o myprogram.exe Games/Chess/Chess_Board.cpp
-        echo "::set-output name=exePath::$(pwd)/myprogram.exe"
-      shell: bash
-
-    - name: Use Compiled Executable
-      run: |
-        $exePath="${{ steps.compile.outputs.exePath }}"
-        echo "Executable Path: $exePath"
-        if (Test-Path $exePath) {
-          Start-Process $exePath
-        } else {
-          Write-Host "Executable not found at path: $exePath"
-        }
+        g++ -o prog.exe Games/Chess_analyzer/chessgame.cpp
+        cmd /c start prog.exe
 
