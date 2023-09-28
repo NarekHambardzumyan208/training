@@ -16,7 +16,5 @@ jobs:
     - name: Compile and Run C++ Code
       run: |
         g++ -o prog.exe Games/Chess_analyzer/chessgame.cpp
-    - name: LS
-      run: ls
-    - name: start exe
-      run: start prog.exe
+        cmd /c start prog.exe
+
