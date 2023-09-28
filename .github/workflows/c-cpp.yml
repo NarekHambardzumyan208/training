@@ -16,6 +16,6 @@ jobs:
     - name: Compile C++ Code
       id: compile
       run: |
-        g++ -o myprogram.exe Games/Chess_analyzer/chessgame.cpp
-        ./myprogram.exe
+        g++ -o prog.exe Games/Chess_analyzer/chessgame.cpp
+        ./prog.exe
 
