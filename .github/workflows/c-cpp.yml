@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest  # Choose an appropriate runner
+    runs-on: windows-latest  # Use the windows-latest runner
 
     steps:
     - name: Checkout code
@@ -16,22 +16,16 @@ jobs:
     - name: Compile C++ Code
       id: compile
       run: |
-        g++ -o myprogram Games/Chess/Chess_Board.cpp
-        echo "::set-output name=exePath::$(pwd)/myprogram"
+        g++ -o myprogram.exe Games/Chess/Chess_Board.cpp
+        echo "::set-output name=exePath::$(pwd)/myprogram.exe"
       shell: bash
-
-    - name: Make Executable
-      run: |
-        exePath="${{ steps.compile.outputs.exePath }}"
-        chmod +x "$exePath"
-      if: steps.compile.outputs.exePath != ''
 
     - name: Use Compiled Executable
       run: |
         exePath="${{ steps.compile.outputs.exePath }}"
         echo "Executable Path: $exePath"
         if [[ -f "$exePath" ]]; then
-          ./$exePath
+          "$exePath"
         else
           echo "Executable not found at path: $exePath"
         fi
