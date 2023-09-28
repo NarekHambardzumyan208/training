@@ -1,29 +1,31 @@
-name: Compile and Run C++
+name: Build C++ Application
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust the branch as needed
 
 jobs:
   build:
-    name: Build and Run
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Choose an appropriate runner
 
     steps:
-    - name: Check out code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up g++
-      run: sudo apt-get install g++
-
-    - name: Compile and Run
+    - name: Compile C++ Code
+      id: compile
       run: |
-        g++ -o my_program Games/Chess/Chess_Board.cpp
+        g++ -o myprogram main.cpp
         echo "::set-output name=exePath::$(pwd)/myprogram"
+      shell: bash
+
     - name: Use Compiled Executable
       run: |
-        echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
-        # Now you can use ${{ steps.compile.outputs.exePath }} in your workflow
-        # For example, you can run the compiled executable here
-        ./${{ steps.compile.outputs.exePath }}
+        exePath="${{ steps.compile.outputs.exePath }}"
+        if [[ -f "$exePath" ]]; then
+          echo "Executable Path: $exePath"
+          ./$exePath
+        else
+          echo "Executable not found at path: $exePath"
+        fi
