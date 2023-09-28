@@ -19,20 +19,19 @@ jobs:
         g++ -o myprogram Games/Chess/Chess_Board.cpp
         echo "::set-output name=exePath::$(pwd)/myprogram"
       shell: bash
-   - name: Make Executable
-     run: |
-     exePath="${{ steps.compile.outputs.exePath }}"
-     chmod +x "$exePath"
-     if: steps.compile.outputs.exePath != ''
 
-  - name: Use Compiled Executable
-    run: |
-    exePath="${{ steps.compile.outputs.exePath }}"
-    echo "Executable Path: $exePath"
-    if [[ -f "$exePath" ]]; then
-      ./$exePath
-    else
-      echo "Executable not found at path: $exePath"
-    fi
-    
+    - name: Make Executable
+      run: |
+        exePath="${{ steps.compile.outputs.exePath }}"
+        chmod +x "$exePath"
+      if: steps.compile.outputs.exePath != ''
 
+    - name: Use Compiled Executable
+      run: |
+        exePath="${{ steps.compile.outputs.exePath }}"
+        echo "Executable Path: $exePath"
+        if [[ -f "$exePath" ]]; then
+          ./$exePath
+        else
+          echo "Executable not found at path: $exePath"
+        fi
