@@ -20,6 +20,10 @@ jobs:
     - name: Compile and Run
       run: |
         g++ -o my_program Games/Chess/Chess_Board.cpp
-        echo "##[set-output name=exePath]$(pwd)/myprogram"
+        echo "::set-output name=exePath::$(pwd)/myprogram"
+    - name: Use Compiled Executable
+      run: |
+        echo "Executable Path: ${{ steps.compile.outputs.exePath }}"
+        # Now you can use ${{ steps.compile.outputs.exePath }} in your workflow
+        # For example, you can run the compiled executable here
         ./${{ steps.compile.outputs.exePath }}
-
